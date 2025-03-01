@@ -22,9 +22,8 @@ public static class Program
         const int Chunksize = 100;
 
         // Search settings
-        const string Query = "贪婪";
-        const float MinRelevance = 0.2f;
-        const int Limit = 2;
+        const float MinRelevance = 0.5f;
+        const int Limit = 5;
 
         var ollamaConfig = new OllamaConfig()
         {
@@ -77,7 +76,15 @@ public static class Program
         // Search
         Console.WriteLine("Searching memories...");
         // 关键点：搜索
-        SearchResult relevant = await memory.SearchAsync(query: Query, minRelevance: MinRelevance, limit: Limit);
+        SearchResult relevant = await memory.SearchAsync(query: "贪婪", minRelevance: MinRelevance, limit: Limit);
+        PrintResult(relevant);
+
+        relevant = await memory.SearchAsync(query: "优秀的企业", minRelevance: MinRelevance, limit: Limit);
+        PrintResult(relevant);
+    }
+
+    public static void PrintResult(SearchResult relevant)
+    {
         Console.WriteLine($"Relevant documents: {relevant.Results.Count}");
 
         foreach (Citation result in relevant.Results)
