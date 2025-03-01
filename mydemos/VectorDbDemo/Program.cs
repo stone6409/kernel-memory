@@ -11,6 +11,9 @@ namespace VectorDbDemo;
 
 public static class Program
 {
+    private static string StorageFolder => Path.GetFullPath($"./dbstorage");
+    private static bool StorageExists => Directory.Exists(StorageFolder) && Directory.GetDirectories(StorageFolder).Length > 0;
+
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Reliability", "CA2007:Consider calling ConfigureAwait on the awaited task", Justification = "<Pending>")]
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1303:Do not pass literals as localized parameters", Justification = "<Pending>")]
     public static async Task Main(string[] args)
@@ -29,6 +32,18 @@ public static class Program
             Endpoint = "http://localhost:11434/"
         };
 
+        SimpleFileStorageConfig storageConfig = new()
+        {
+            Directory = StorageFolder,
+            StorageType = FileSystemTypes.Disk,
+        };
+
+        SimpleVectorDbConfig vectorDbConfig = new()
+        {
+            Directory = StorageFolder,
+            StorageType = FileSystemTypes.Disk,
+        };
+
         // Customize memory records size (in tokens)
         var textPartitioningOptions = new TextPartitioningOptions
         {
@@ -36,17 +51,26 @@ public static class Program
             OverlappingTokens = 0,
         };
 
+        SearchClientConfig searchClientConfig = new()
+        {
+            AnswerTokens = 4096,
+        };
+
         var memory = new KernelMemoryBuilder()
            .WithOllamaTextEmbeddingGeneration(ollamaConfig)
            .WithCustomTextPartitioningOptions(textPartitioningOptions)
-           .WithSimpleFileStorage(new SimpleFileStorageConfig { StorageType = FileSystemTypes.Disk })
-           .WithSimpleVectorDb(new SimpleVectorDbConfig { StorageType = FileSystemTypes.Disk })
+           .WithSimpleFileStorage(storageConfig)
+           .WithSimpleVectorDb(vectorDbConfig)
+           .WithSearchClientConfig(searchClientConfig)
            .WithoutTextGenerator()
            .Build();
 
-        // Load text into memory
-        Console.WriteLine("Importing memories...");
-        await memory.ImportDocumentAsync(filePath: "story.docx", documentId: "example207");
+        if (!StorageExists)
+        {
+            // Load text into memory
+            Console.WriteLine("Importing memories...");
+            await memory.ImportDocumentAsync(filePath: "story.docx", documentId: "example207");
+        }      
 
         // Search
         Console.WriteLine("Searching memories...");
