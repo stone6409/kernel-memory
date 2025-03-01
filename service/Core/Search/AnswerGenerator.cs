@@ -31,7 +31,8 @@ internal class AnswerGenerator
         IContentModeration? contentModeration = null,
         ILoggerFactory? loggerFactory = null)
     {
-        this._textGenerator = textGenerator;
+        // 关键点：赋值textGenerator
+        this._textGenerator = textGenerator; 
         this._contentModeration = contentModeration;
         this._config = config ?? new SearchClientConfig();
         this._config.Validate();
@@ -120,6 +121,7 @@ internal class AnswerGenerator
         yield return result.AskResult;
     }
 
+    // 关键点：准备提示语
     private string PreparePrompt(string question, string facts, IContext? context)
     {
         string prompt = context.GetCustomRagPromptOrDefault(this._answerPrompt);

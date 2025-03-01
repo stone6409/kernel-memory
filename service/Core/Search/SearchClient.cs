@@ -229,6 +229,7 @@ public sealed class SearchClient : ISearchClient
         }
 
         this._log.LogTrace("Fetching relevant memories");
+        // 关键点：获取类似列表
         IAsyncEnumerable<(MemoryRecord, double)> matches = this._memoryDb.GetSimilarListAsync(
             index: index,
             text: question,

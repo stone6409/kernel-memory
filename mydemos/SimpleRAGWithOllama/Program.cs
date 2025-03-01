@@ -19,16 +19,16 @@ internal class Program
             Endpoint = "http://localhost:11434/"
         };
 
-        //var openAIConfig = new OpenAIConfig
-        //{
-        //    Endpoint = "https://api.lkeap.cloud.tencent.com/v1/",
-        //    TextModel = "deepseek-v3",
-        //    APIKey = "sk-L7hpFlDbWTfRYVVTFHVsukGrS11BzRExwjYcTZCzeHs0AQyi"
-        //};
+        var openAIConfig = new OpenAIConfig
+        {
+            Endpoint = "https://api.lkeap.cloud.tencent.com/v1/",
+            TextModel = "deepseek-v3",
+            APIKey = "sk-L7hpFlDbWTfRYVVTFHVsukGrS11BzRExwjYcTZCzeHs0AQyi"
+        };
 
         var memoryBuilder = new KernelMemoryBuilder()
-            .WithOllamaTextGeneration(ollamaConfig)
-            //.WithOpenAITextGeneration(openAIConfig)
+            //.WithOllamaTextGeneration(ollamaConfig)
+            .WithOpenAITextGeneration(openAIConfig)
             .WithOllamaTextEmbeddingGeneration(ollamaConfig)
             .WithSearchClientConfig(new SearchClientConfig()
             {
