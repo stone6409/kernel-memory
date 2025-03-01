@@ -19,7 +19,7 @@ public static class Program
     public static async Task Main(string[] args)
     {
         // Partition input text in chunks of 100 tokens
-        const int Chunksize = 100;
+        const int Chunksize = 200;
 
         // Search settings
         const float MinRelevance = 0.4f;
