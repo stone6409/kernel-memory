@@ -22,13 +22,15 @@ public static class Program
         const int Chunksize = 100;
 
         // Search settings
-        const string Query = "astrobiology";
-        const float MinRelevance = 0.7f;
+        const string Query = "贪婪";
+        const float MinRelevance = 0.2f;
         const int Limit = 2;
 
         var ollamaConfig = new OllamaConfig()
         {
-            EmbeddingModel = new OllamaModelConfig("nomic-embed-text:latest") { MaxTokenTotal = 2048 },
+            //EmbeddingModel = new OllamaModelConfig("nomic-embed-text:latest") { MaxTokenTotal = 2048 },
+            //EmbeddingModel = new OllamaModelConfig("mxbai-embed-large") { MaxTokenTotal = 2048 },
+            EmbeddingModel = new OllamaModelConfig("bge-m3") { MaxTokenTotal = 2048 },
             Endpoint = "http://localhost:11434/"
         };
 
@@ -69,7 +71,7 @@ public static class Program
         {
             // Load text into memory
             Console.WriteLine("Importing memories...");
-            await memory.ImportDocumentAsync(filePath: "story.docx", documentId: "example207");
+            await memory.ImportDocumentAsync(filePath: "巴菲特投资名言.docx", documentId: "example207");
         }      
 
         // Search
@@ -77,5 +79,51 @@ public static class Program
         // 关键点：搜索
         SearchResult relevant = await memory.SearchAsync(query: Query, minRelevance: MinRelevance, limit: Limit);
         Console.WriteLine($"Relevant documents: {relevant.Results.Count}");
+
+        foreach (Citation result in relevant.Results)
+        {
+            // Store the document IDs so we can load all their records later
+            Console.WriteLine($"Document ID: {result.DocumentId}");
+            Console.WriteLine($"Relevant partitions: {result.Partitions.Count}");
+            foreach (Citation.Partition partition in result.Partitions)
+            {
+                Console.WriteLine($" * Partition {partition.PartitionNumber}, relevance: {partition.Relevance}");
+            }
+
+            Console.WriteLine("--------------------------");
+
+            // For each relevant partition fetch the partition before and one after
+            foreach (Citation.Partition partition in result.Partitions)
+            {
+                // Collect partitions in a sorted collection
+                var partitions = new SortedDictionary<int, Citation.Partition> { [partition.PartitionNumber] = partition };
+
+                // Filters to fetch adjacent partitions
+                //var filters = new List<MemoryFilter>
+                //{
+                //    MemoryFilters.ByDocument(result.DocumentId).ByTag(Constants.ReservedFilePartitionNumberTag, $"{partition.PartitionNumber - 1}"),
+                //    MemoryFilters.ByDocument(result.DocumentId).ByTag(Constants.ReservedFilePartitionNumberTag, $"{partition.PartitionNumber + 1}")
+                //};
+
+                //// Fetch adjacent partitions and add them to the sorted collection
+                //SearchResult adjacentList = await memory.SearchAsync("", filters: filters, limit: 2);
+                //foreach (Citation.Partition adjacent in adjacentList.Results.First().Partitions)
+                //{
+                //    partitions[adjacent.PartitionNumber] = adjacent;
+                //}
+
+                // Print partitions in order
+                foreach (var p in partitions)
+                {
+                    Console.WriteLine($"# Partition {p.Value.PartitionNumber}");
+                    Console.WriteLine(p.Value.Text);
+                    Console.WriteLine();
+                }
+
+                Console.WriteLine("--------------------------");
+            }
+
+            Console.WriteLine();
+        }
     }
 }
