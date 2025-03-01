@@ -22,8 +22,8 @@ public static class Program
         const int Chunksize = 100;
 
         // Search settings
-        const float MinRelevance = 0.5f;
-        const int Limit = 5;
+        const float MinRelevance = 0.4f;
+        const int Limit = 2;
 
         var ollamaConfig = new OllamaConfig()
         {
@@ -75,12 +75,22 @@ public static class Program
 
         // Search
         Console.WriteLine("Searching memories...");
-        // 关键点：搜索
-        SearchResult relevant = await memory.SearchAsync(query: "贪婪", minRelevance: MinRelevance, limit: Limit);
-        PrintResult(relevant);
 
-        relevant = await memory.SearchAsync(query: "优秀的企业", minRelevance: MinRelevance, limit: Limit);
-        PrintResult(relevant);
+        string userInput = "贪婪";
+        while (userInput != "Exit")
+        {
+            if (string.IsNullOrWhiteSpace(userInput))
+            {
+                continue;
+            }
+
+            // 关键点：搜索
+            SearchResult relevant = await memory.SearchAsync(query: userInput, minRelevance: MinRelevance, limit: Limit);
+            PrintResult(relevant);
+
+            Console.WriteLine("Please Ask your question");
+            userInput = Console.ReadLine();
+        }
     }
 
     public static void PrintResult(SearchResult relevant)
