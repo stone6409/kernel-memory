@@ -40,6 +40,7 @@ public class SimpleVectorDb : IMemoryDb
         ITextEmbeddingGenerator embeddingGenerator,
         ILoggerFactory? loggerFactory = null)
     {
+        // 关键点：赋值矢量数据库
         this._embeddingGenerator = embeddingGenerator;
 
         if (this._embeddingGenerator == null)

@@ -77,6 +77,7 @@ public static class Program
 
         // Search
         Console.WriteLine("Searching memories...");
+        // 关键点：搜索
         SearchResult relevant = await memory.SearchAsync(query: Query, minRelevance: MinRelevance, limit: Limit);
         Console.WriteLine($"Relevant documents: {relevant.Results.Count}");
 

@@ -21,10 +21,17 @@ internal class Program
 
         var openAIConfig = new OpenAIConfig
         {
-            Endpoint = "https://api.lkeap.cloud.tencent.com/v1/",
-            TextModel = "deepseek-v3",
-            APIKey = "sk-L7hpFlDbWTfRYVVTFHVsukGrS11BzRExwjYcTZCzeHs0AQyi"
+            Endpoint = "https://api.moonshot.cn/v1/",
+            TextModel = "moonshot-v1-8k",
+            APIKey = "sk-UmawlPaRLJ2xjl31lUZfwJTUelTshEyPYPQr4NAtpeXuHffg"
         };
+
+        //var openAIConfig = new OpenAIConfig
+        //{
+        //    Endpoint = "https://api.lkeap.cloud.tencent.com/v1/",
+        //    TextModel = "deepseek-v3",
+        //    APIKey = "sk-L7hpFlDbWTfRYVVTFHVsukGrS11BzRExwjYcTZCzeHs0AQyi"
+        //};
 
         var memoryBuilder = new KernelMemoryBuilder()
             //.WithOllamaTextGeneration(ollamaConfig)
