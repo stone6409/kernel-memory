@@ -94,13 +94,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{B897
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{48E79819-1E9E-4075-90DA-BAEC761C89B2}"
 	ProjectSection(SolutionItems) = preProject
+		.github\workflows\docker-multiarch.yml = .github\workflows\docker-multiarch.yml
 		.github\workflows\dotnet-build.yml = .github\workflows\dotnet-build.yml
 		.github\workflows\dotnet-unit-tests.yml = .github\workflows\dotnet-unit-tests.yml
-		.github\workflows\github-pages-jekyll.yml = .github\workflows\github-pages-jekyll.yml
-		.github\workflows\spell-check-with-typos.yml = .github\workflows\spell-check-with-typos.yml
 		.github\workflows\fortify.yml = .github\workflows\fortify.yml
+		.github\workflows\github-pages-jekyll.yml = .github\workflows\github-pages-jekyll.yml
 		.github\workflows\securitycodescan.yml = .github\workflows\securitycodescan.yml
-		.github\workflows\docker-multiarch.yml = .github\workflows\docker-multiarch.yml
+		.github\workflows\spell-check-with-typos.yml = .github\workflows\spell-check-with-typos.yml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "service", "service", "{87DEAE8D-138C-4FDD-B4C9-11C3A7817E8F}"
@@ -345,9 +345,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "dev", "dev", "{3C1C483D-2C0
 		tools\dev\create-azure-webapp-publish-artifacts.sh = tools\dev\create-azure-webapp-publish-artifacts.sh
 		tools\dev\dockerize-amd64.sh = tools\dev\dockerize-amd64.sh
 		tools\dev\dockerize-arm64.sh = tools\dev\dockerize-arm64.sh
+		tools\dev\dockerize-multiarch.sh = tools\dev\dockerize-multiarch.sh
 		tools\dev\get-azure-token.py = tools\dev\get-azure-token.py
 		tools\dev\run-unit-tests.sh = tools\dev\run-unit-tests.sh
-		tools\dev\dockerize-multiarch.sh = tools\dev\dockerize-multiarch.sh
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "km-cli", "km-cli", "{239F5FE9-EAEE-4FA7-A3D5-09608FBA6EED}"
@@ -407,6 +407,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chunkers", "extensions\Chunkers\Chunkers\Chunkers.csproj", "{BFF9BE1A-B0E4-4ABE-B384-01B200D4FEFB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chunkers.UnitTests", "extensions\Chunkers\Chunkers.UnitTests\Chunkers.UnitTests.csproj", "{FD1EB2C1-581E-4EB8-AF4A-BC4773453226}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "mydemos", "mydemos", "{056743B0-43C6-4A77-94B5-9E443AF83248}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleRAGWithOllama", "mydemos\SimpleRAGWithOllama\SimpleRAGWithOllama.csproj", "{BBFB5AA0-6369-40FC-A2BC-3DD6193A54E9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -720,17 +724,23 @@ Global
 		{FD1EB2C1-581E-4EB8-AF4A-BC4773453226}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{FD1EB2C1-581E-4EB8-AF4A-BC4773453226}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FD1EB2C1-581E-4EB8-AF4A-BC4773453226}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BBFB5AA0-6369-40FC-A2BC-3DD6193A54E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BBFB5AA0-6369-40FC-A2BC-3DD6193A54E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BBFB5AA0-6369-40FC-A2BC-3DD6193A54E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BBFB5AA0-6369-40FC-A2BC-3DD6193A54E9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{7BA7F1B2-19E2-46EB-B000-513EE2F65769} = {6EF76FD8-4C35-4370-8539-5DDF45357A50}
 		{C93FCED9-808A-4B03-9B4C-0DBAE46D5BDD} = {0A43C65C-6007-4BB4-B3FE-8D439FC91841}
 		{CA1D9162-D4C5-490D-AAD5-7A9A23092C28} = {0A43C65C-6007-4BB4-B3FE-8D439FC91841}
 		{2C4D5F14-CCFC-4913-B884-B2FF9067BEFF} = {0A43C65C-6007-4BB4-B3FE-8D439FC91841}
 		{B8976338-7CDC-47AE-8502-C2FBAFBEBD68} = {6EF76FD8-4C35-4370-8539-5DDF45357A50}
 		{48E79819-1E9E-4075-90DA-BAEC761C89B2} = {B8976338-7CDC-47AE-8502-C2FBAFBEBD68}
 		{3C17F42B-CFC8-4900-8CFB-88936311E919} = {5E7DD43D-B5E7-4827-B57D-447E5B428589}
+		{CA49F1A1-C3FA-4E99-ACB3-D7FF33D47976} = {6EF76FD8-4C35-4370-8539-5DDF45357A50}
 		{8A9FA587-7EBA-4D43-BE47-38D798B1C74C} = {87DEAE8D-138C-4FDD-B4C9-11C3A7817E8F}
 		{C4AFA538-8939-4525-A361-665833947F72} = {5E7DD43D-B5E7-4827-B57D-447E5B428589}
 		{27910ADC-5A28-4EB4-A16E-974B91940758} = {87DEAE8D-138C-4FDD-B4C9-11C3A7817E8F}
@@ -827,8 +837,6 @@ Global
 		{D81B99FF-E13D-4127-AC01-4BF0C8B02C71} = {07A91D09-CA4D-425F-83AD-F955336AACD7}
 		{3C1C483D-2C09-4B0D-9394-82B2AF1D61F1} = {CA49F1A1-C3FA-4E99-ACB3-D7FF33D47976}
 		{239F5FE9-EAEE-4FA7-A3D5-09608FBA6EED} = {CA49F1A1-C3FA-4E99-ACB3-D7FF33D47976}
-		{CA49F1A1-C3FA-4E99-ACB3-D7FF33D47976} = {6EF76FD8-4C35-4370-8539-5DDF45357A50}
-		{7BA7F1B2-19E2-46EB-B000-513EE2F65769} = {6EF76FD8-4C35-4370-8539-5DDF45357A50}
 		{41A5A076-B35D-4191-B98C-65AD5782A108} = {155DA079-E267-49AF-973A-D1D44681970F}
 		{AC6CAAFA-8A0D-4C8E-B297-9C7645FE5231} = {C2D3A947-B6F9-4306-BD42-21D8D1F42750}
 		{DBE12D46-C721-4813-A641-C8E16C884882} = {C2D3A947-B6F9-4306-BD42-21D8D1F42750}
@@ -839,6 +847,7 @@ Global
 		{B7CC5E82-AD91-488F-8C05-1ECD767D4A10} = {B488168B-AD86-4CC5-9D89-324B6EB743D9}
 		{BFF9BE1A-B0E4-4ABE-B384-01B200D4FEFB} = {155DA079-E267-49AF-973A-D1D44681970F}
 		{FD1EB2C1-581E-4EB8-AF4A-BC4773453226} = {3C17F42B-CFC8-4900-8CFB-88936311E919}
+		{BBFB5AA0-6369-40FC-A2BC-3DD6193A54E9} = {056743B0-43C6-4A77-94B5-9E443AF83248}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {CC136C62-115C-41D1-B414-F9473EFF6EA8}

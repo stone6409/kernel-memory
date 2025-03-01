@@ -254,6 +254,7 @@ public sealed class SearchClient : ISearchClient
 
         this._log.LogTrace("{Count} records processed", result.RecordCount);
 
+        // 关键点：使用嵌入模型的回复结果询问大模型
         var first = true;
         await foreach (MemoryAnswer answer in this._answerGenerator.GenerateAnswerAsync(question, result, context, cancellationToken).ConfigureAwait(false))
         {

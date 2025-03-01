@@ -81,6 +81,7 @@ internal class AnswerGenerator
             yield break;
         }
 
+        // 关键点：生成答案Tokens
         var completeAnswerTokens = new StringBuilder();
         await foreach (GeneratedTextContent answerToken in this.GenerateAnswerTokensAsync(prompt, context, cancellationToken).ConfigureAwait(false))
         {
