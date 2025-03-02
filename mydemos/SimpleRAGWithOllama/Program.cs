@@ -4,6 +4,7 @@ using Microsoft.KernelMemory.AI.Ollama;
 using Microsoft.KernelMemory.Configuration;
 using Microsoft.KernelMemory;
 using System.Collections.ObjectModel;
+using static Microsoft.KernelMemory.OpenAIConfig;
 
 namespace SimpleRAGWithOllama;
 
@@ -15,7 +16,7 @@ internal class Program
         var ollamaConfig = new OllamaConfig()
         {
             TextModel = new OllamaModelConfig("deepseek-r1:1.5b") { MaxTokenTotal = 125000, Seed = 42, TopK = 7 },
-            EmbeddingModel = new OllamaModelConfig("nomic-embed-text:latest") { MaxTokenTotal = 2048 },
+            EmbeddingModel = new OllamaModelConfig("bge-m3") { MaxTokenTotal = 2048 },
             Endpoint = "http://localhost:11434/"
         };
 
@@ -28,6 +29,7 @@ internal class Program
 
         //var openAIConfig = new OpenAIConfig
         //{
+        //    //TextGenerationType = TextGenerationTypes.TextCompletion,
         //    Endpoint = "https://api.lkeap.cloud.tencent.com/v1/",
         //    TextModel = "deepseek-v3",
         //    APIKey = "sk-L7hpFlDbWTfRYVVTFHVsukGrS11BzRExwjYcTZCzeHs0AQyi"
