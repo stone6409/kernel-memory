@@ -20,16 +20,24 @@ internal class Program
             Endpoint = "http://localhost:11434/"
         };
 
+        //var openAIConfig = new OpenAIConfig
+        //{
+        //    Endpoint = "https://api.moonshot.cn/v1/",
+        //    TextModel = "moonshot-v1-8k",
+        //    APIKey = "sk-UmawlPaRLJ2xjl31lUZfwJTUelTshEyPYPQr4NAtpeXuHffg"
+        //};
+
         var openAIConfig = new OpenAIConfig
         {
-            Endpoint = "https://api.moonshot.cn/v1/",
-            TextModel = "moonshot-v1-8k",
-            APIKey = "sk-UmawlPaRLJ2xjl31lUZfwJTUelTshEyPYPQr4NAtpeXuHffg"
+            //TextGenerationType = TextGenerationTypes.Chat,
+            Endpoint = "https://ark.cn-beijing.volces.com/api/v3/",
+            TextModel = "ep-20250220113714-zcj7m",
+            APIKey = "2b892e90-e044-43fe-9293-a1783f1e0aeb"
         };
 
         //var openAIConfig = new OpenAIConfig
         //{
-        //    //TextGenerationType = TextGenerationTypes.TextCompletion,
+        //    //TextGenerationType = TextGenerationTypes.Chat,
         //    Endpoint = "https://api.lkeap.cloud.tencent.com/v1/",
         //    TextModel = "deepseek-v3",
         //    APIKey = "sk-L7hpFlDbWTfRYVVTFHVsukGrS11BzRExwjYcTZCzeHs0AQyi"
