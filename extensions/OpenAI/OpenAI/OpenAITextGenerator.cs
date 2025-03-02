@@ -155,6 +155,7 @@ public sealed class OpenAITextGenerator : ITextGenerator
         IAsyncEnumerable<StreamingTextContent> result;
         try
         {
+            // 关键点：流文本对话
             result = this._client.GetStreamingTextContentsAsync(prompt, skOptions, cancellationToken: cancellationToken);
         }
         catch (HttpOperationException e)
