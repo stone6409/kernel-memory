@@ -91,8 +91,8 @@ internal class Program
 
         var chatHistory = new ChatHistory();
         Console.WriteLine("You can exit the console by tapping 'Exit'.");
-        Console.WriteLine("第一个问题: 伊桑·卡特是什么时候出生的？");
-        var userInput = "伊桑·卡特是什么时候出生的？";
+        Console.WriteLine("第一个问题: 伊森·卡特是什么时候出生的？");
+        var userInput = "伊森·卡特是什么时候出生的？";
 
         SearchResult answerResult = await memory.SearchAsync(userInput,
                 index,
@@ -113,7 +113,7 @@ internal class Program
                 index,
                 memoryFilter,
                 context: context,
-                minRelevance: .6f).ConfigureAwait(false);
+                minRelevance: .4f).ConfigureAwait(false);
 
             chatHistory.AddUserMessage(userInput);
             chatHistory.AddAssistantMessage(answer.Result);
