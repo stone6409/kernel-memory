@@ -70,7 +70,8 @@ public static class Program
         {
             // Load text into memory
             Console.WriteLine("Importing memories...");
-            await memory.ImportDocumentAsync(filePath: "巴菲特投资名言.docx", documentId: "example207");
+            var docId = await memory.ImportDocumentAsync(filePath: "巴菲特投资名言.docx", documentId: "example207");
+            Console.WriteLine($"- Document Id: {docId}");
         }      
 
         // Search

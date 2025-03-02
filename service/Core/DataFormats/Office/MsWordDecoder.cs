@@ -21,6 +21,7 @@ public sealed class MsWordDecoder : IContentDecoder
 {
     private readonly ILogger<MsWordDecoder> _log;
 
+    // 关键点：Word文档解码器
     public MsWordDecoder(ILoggerFactory? loggerFactory = null)
     {
         this._log = (loggerFactory ?? DefaultLogger.Factory).CreateLogger<MsWordDecoder>();
