@@ -66,12 +66,12 @@ public class RAGService
     {
         if (!File.Exists(filePath))
         {
-            throw new FileNotFoundException("文档文件未找到", filePath);
+            throw new FileNotFoundException("Document file not found.", filePath);
         }
 
-        Console.WriteLine("导入文档...");
+        Console.WriteLine("Importing doucement...");
         var docId = await _memory.ImportDocumentAsync(filePath, documentId);
-        Console.WriteLine($"- 文档 ID: {docId}");
+        Console.WriteLine($"- Document Id: {docId}");
         return docId;
     }
 
@@ -84,7 +84,7 @@ public class RAGService
     /// <returns>搜索结果</returns>
     public async Task<SearchResult> SearchAsync(string query, float minRelevance = 0.4f, int limit = 2)
     {
-        Console.WriteLine("搜索文档...");
+        Console.WriteLine("Searching doucement...");
         var result = await _memory.SearchAsync(query, minRelevance: minRelevance, limit: limit);
         return result;
     }
@@ -95,16 +95,16 @@ public class RAGService
     /// <param name="result">搜索结果</param>
     public void PrintSearchResult(SearchResult result)
     {
-        Console.WriteLine($"相关文档数量: {result.Results.Count}");
+        Console.WriteLine($"Relevant documents: {result.Results.Count}");
 
         foreach (Citation citation in result.Results)
         {
-            Console.WriteLine($"文档 ID: {citation.DocumentId}");
-            Console.WriteLine($"相关段落数量: {citation.Partitions.Count}");
+            Console.WriteLine($"Document ID: {citation.DocumentId}");
+            Console.WriteLine($"Relevant partitions: {citation.Partitions.Count}");
 
             foreach (Citation.Partition partition in citation.Partitions)
             {
-                Console.WriteLine($" * 段落 {partition.PartitionNumber}, 相关性: {partition.Relevance}");
+                Console.WriteLine($" * Partition {partition.PartitionNumber}, relevance: {partition.Relevance}");
             }
 
             Console.WriteLine("--------------------------");
@@ -112,7 +112,7 @@ public class RAGService
             // 打印每个段落的内容
             foreach (Citation.Partition partition in citation.Partitions)
             {
-                Console.WriteLine($"# 段落 {partition.PartitionNumber}");
+                Console.WriteLine($"# Partition {partition.PartitionNumber}");
                 Console.WriteLine(partition.Text);
                 Console.WriteLine();
             }

@@ -27,20 +27,19 @@ namespace VectorDbDemo
                 await ragService.ImportDocumentAsync(filePath: "巴菲特投资名言.docx", documentId: "example207");
             }
 
-            // 搜索
-            Console.WriteLine("请输入您的问题 (输入 'Exit' 退出):");
-            string userInput = Console.ReadLine();
-
-            while (userInput != "Exit")
+            while (true)
             {
+                Console.WriteLine("Please enter your question (type 'Exit' to exit):");
+                string userInput = Console.ReadLine();
+
+                if (userInput == "Exit")
+                    break;
+
                 if (!string.IsNullOrWhiteSpace(userInput))
                 {
                     var result = await ragService.SearchAsync(userInput);
                     ragService.PrintSearchResult(result);
                 }
-
-                Console.WriteLine("请输入您的问题 (输入 'Exit' 退出):");
-                userInput = Console.ReadLine();
             }
         }
     }
