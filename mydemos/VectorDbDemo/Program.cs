@@ -46,27 +46,34 @@ public static class Program
     {
         // 定义多个索引及其对应的导入配置
         var indexConfigs = new List<IndexConfig>
+        {
+            new()
             {
-                new() {
-                    IndexName = "default",
-                    SingleFiles = new List<SingleFileConfig>
-                    {
-                        new() { FilePath = "Data/Persons.txt", DocumentId = "example001" },
-                        new() { FilePath = "Data/巴菲特投资名言.docx", DocumentId = "example002" }
+                IndexName = "default",
+                SingleFiles = new List<SingleFileConfig>
+                {
+                    new() { FilePath = "Data/Persons.txt", DocumentId = "example001" },
+                    new() { FilePath = "Data/巴菲特投资名言.docx", DocumentId = "example002" }
+                },
+            },
+            new()
+            {
+                IndexName = "StoneToolkit",
+                FolderConfigs = new List<FolderConfig>
+                {
+                    new() {
+                        FolderPath = @"D:\src\ScTrials\src\StoneToolkit\StoneToolkit.Common",
+                        IncludePatterns = new[] { "*.cs", "*.xaml" },
+                        ExcludeFolders = new[] { "bin", "obj" } // 排除 bin 和 obj 文件夹
                     },
-                },
-                new() {
-                    IndexName = "StoneToolkit",
-                    FolderConfigs = new List<FolderConfig>
-                    {
-                        new() {
-                            FolderPath = @"D:\src\ScTrials\src\StoneToolkit\StoneToolkit.Common",
-                            IncludePatterns = new[] { "*.cs", "*.xaml" },
-                            ExcludePaths = new[] { @"SubFolder\File.cs" }
-                        },
+                    new() {
+                        FolderPath = @"D:\src\ScTrials\src\StoneToolkit\StoneToolkit.WpfCommon",
+                        IncludePatterns = new[] { "*.cs", "*.xaml" },
+                        ExcludeFolders = new[] { "bin", "obj" } // 排除 bin 和 obj 文件夹
                     }
-                },
-            };
+                }
+            }
+        };
 
         // 检查并导入每个索引
         foreach (var config in indexConfigs)
@@ -109,6 +116,7 @@ public static class Program
                     folderConfig.FolderPath,
                     folderConfig.IncludePatterns,
                     folderConfig.ExcludePaths,
+                    folderConfig.ExcludeFolders,
                     config.IndexName);
                 Console.WriteLine($"Imported {importCount} files from '{folderConfig.FolderPath}' to index '{config.IndexName}'.");
             }
