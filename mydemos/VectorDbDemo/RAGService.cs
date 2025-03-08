@@ -153,7 +153,7 @@ public class RAGService
         foreach (var file in files)
         {
             // 获取文件相对于 folderPath 的相对路径作为 documentId
-            var documentId = Path.GetRelativePath(folderPath, file);
+            var documentId = Path.GetRelativePath(folderPath, file).Replace("\\", "_");
             await ImportDocumentAsync(file, documentId, index);
         }
 

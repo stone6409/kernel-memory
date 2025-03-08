@@ -1,43 +1,64 @@
 ﻿using Microsoft.KernelMemory.AI.Ollama;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Threading.Tasks;
 
-namespace VectorDbDemo
+namespace VectorDbDemo;
+
+public static class Program
 {
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Reliability", "CA2007:Consider calling ConfigureAwait on the awaited task", Justification = "<Pending>")]
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1303:Do not pass literals as localized parameters", Justification = "<Pending>")]
-    public static class Program
+    private static string StorageFolder => Path.GetFullPath($"./dbstorage");
+    private static bool StorageExists => Directory.Exists(StorageFolder) && Directory.GetDirectories(StorageFolder).Length > 0;
+
+    public static async Task Main(string[] args)
     {
-        private static string StorageFolder => Path.GetFullPath($"./dbstorage");
-        private static bool StorageExists => Directory.Exists(StorageFolder) && Directory.GetDirectories(StorageFolder).Length > 0;
-
-        public static async Task Main(string[] args)
+        var ollamaConfig = new OllamaConfig
         {
-            var ollamaConfig = new OllamaConfig
-            {
-                EmbeddingModel = new OllamaModelConfig("bge-m3") { MaxTokenTotal = 2048 },
-                Endpoint = "http://localhost:11434/"
-            };
+            EmbeddingModel = new OllamaModelConfig("bge-m3") { MaxTokenTotal = 2048 },
+            Endpoint = "http://localhost:11434/"
+        };
 
-            var ragService = new RAGService(StorageFolder, ollamaConfig);
+        var ragService = new RAGService(StorageFolder, ollamaConfig);
 
-            // 定义多个索引及其对应的导入配置
-            var indexConfigs = new List<IndexConfig>
+        // 定义并导入索引
+        await DefineAndImportIndexesAsync(ragService);
+
+        // 交互式搜索
+        while (true)
+        {
+            Console.WriteLine("Please enter your question (type 'Exit' to exit):");
+            string userInput = Console.ReadLine();
+
+            if (userInput == "Exit")
+                break;
+
+            if (!string.IsNullOrWhiteSpace(userInput))
             {
-                new IndexConfig
-                {
-                    IndexName = "StoneToolkit",
+                // 默认在第一个索引中搜索
+                var result = await ragService.SearchAsync(userInput);
+                ragService.PrintSearchResult(result);
+            }
+        }
+    }
+
+    /// <summary>
+    /// 定义索引配置并导入文档
+    /// </summary>
+    /// <param name="ragService">RAGService 实例</param>
+    private static async Task DefineAndImportIndexesAsync(RAGService ragService)
+    {
+        // 定义多个索引及其对应的导入配置
+        var indexConfigs = new List<IndexConfig>
+            {
+                new() {
+                    IndexName = "default",
                     SingleFiles = new List<SingleFileConfig>
                     {
-                        new SingleFileConfig { FilePath = "Data/Persons.txt", DocumentId = "example001" },
-                        new SingleFileConfig { FilePath = "Data/巴菲特投资名言.docx", DocumentId = "example002" }
+                        new() { FilePath = "Data/Persons.txt", DocumentId = "example001" },
+                        new() { FilePath = "Data/巴菲特投资名言.docx", DocumentId = "example002" }
                     },
+                },
+                new() {
                     FolderConfigs = new List<FolderConfig>
                     {
-                        new FolderConfig
-                        {
+                        new() {
                             FolderPath = @"D:\src\ScTrials\src\StoneToolkit\StoneToolkit.Common",
                             IncludePatterns = new[] { "*.cs", "*.xaml" },
                             ExcludePaths = new[] { @"SubFolder\File.cs" }
@@ -46,64 +67,49 @@ namespace VectorDbDemo
                 },
             };
 
-            // 检查并导入每个索引
-            foreach (var config in indexConfigs)
+        // 检查并导入每个索引
+        foreach (var config in indexConfigs)
+        {
+            var indexes = await ragService.ListIndexesAsync();
+            if (!indexes.Contains(config.IndexName))
             {
-                var indexes = await ragService.ListIndexesAsync();
-                if (!indexes.Contains(config.IndexName))
-                {
-                    Console.WriteLine($"Index '{config.IndexName}' does not exist. Importing documents...");
-                    await ImportDocumentsAsync(ragService, config);
-                }
-                else
-                {
-                    Console.WriteLine($"Index '{config.IndexName}' already exists. Skipping import.");
-                }
+                Console.WriteLine($"Index '{config.IndexName}' does not exist. Importing documents...");
+                await ImportDocumentsAsync(ragService, config);
             }
-
-            // 交互式搜索
-            while (true)
+            else
             {
-                Console.WriteLine("Please enter your question (type 'Exit' to exit):");
-                string userInput = Console.ReadLine();
-
-                if (userInput == "Exit")
-                    break;
-
-                if (!string.IsNullOrWhiteSpace(userInput))
-                {
-                    // 默认在第一个索引中搜索
-                    var result = await ragService.SearchAsync(userInput, index: indexConfigs[0].IndexName);
-                    ragService.PrintSearchResult(result);
-                }
+                Console.WriteLine($"Index '{config.IndexName}' already exists. Skipping import.");
             }
         }
+    }
 
-        /// <summary>
-        /// 导入文档的方法
-        /// </summary>
-        /// <param name="ragService">RAGService 实例</param>
-        /// <param name="config">索引配置</param>
-        private static async Task ImportDocumentsAsync(RAGService ragService, IndexConfig config)
+    /// <summary>
+    /// 导入文档的方法
+    /// </summary>
+    /// <param name="ragService">RAGService 实例</param>
+    /// <param name="config">索引配置</param>
+    private static async Task ImportDocumentsAsync(RAGService ragService, IndexConfig config)
+    {
+        // 导入单个文件
+        if (config.SingleFiles != null)
         {
-            // 导入单个文件
             foreach (var fileConfig in config.SingleFiles)
             {
                 await ragService.ImportDocumentAsync(fileConfig.FilePath, fileConfig.DocumentId, config.IndexName);
             }
+        }
 
-            // 导入多个文件夹中的文件
-            if (config.FolderConfigs != null)
+        // 导入多个文件夹中的文件
+        if (config.FolderConfigs != null)
+        {
+            foreach (var folderConfig in config.FolderConfigs)
             {
-                foreach (var folderConfig in config.FolderConfigs)
-                {
-                    var importCount = await ragService.ImportDocumentsFromFolderAsync(
-                        folderConfig.FolderPath,
-                        folderConfig.IncludePatterns,
-                        folderConfig.ExcludePaths,
-                        config.IndexName);
-                    Console.WriteLine($"Imported {importCount} files from '{folderConfig.FolderPath}' to index '{config.IndexName}'.");
-                }
+                var importCount = await ragService.ImportDocumentsFromFolderAsync(
+                    folderConfig.FolderPath,
+                    folderConfig.IncludePatterns,
+                    folderConfig.ExcludePaths,
+                    config.IndexName);
+                Console.WriteLine($"Imported {importCount} files from '{folderConfig.FolderPath}' to index '{config.IndexName}'.");
             }
         }
     }
