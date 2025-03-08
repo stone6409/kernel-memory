@@ -1,5 +1,7 @@
 ﻿using Microsoft.KernelMemory.AI.Ollama;
 using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace VectorDbDemo
@@ -21,21 +23,45 @@ namespace VectorDbDemo
 
             var ragService = new RAGService(StorageFolder, ollamaConfig);
 
-            if (!StorageExists)
+            // 定义多个索引及其对应的导入配置
+            var indexConfigs = new List<IndexConfig>
             {
-                // 导入文档
-                await ragService.ImportDocumentAsync(filePath: "Data/Persons.txt", documentId: "example001");
-                await ragService.ImportDocumentAsync(filePath: "Data/巴菲特投资名言.docx", documentId: "example002");
+                new IndexConfig
+                {
+                    IndexName = "StoneToolkit",
+                    SingleFiles = new List<SingleFileConfig>
+                    {
+                        new SingleFileConfig { FilePath = "Data/Persons.txt", DocumentId = "example001" },
+                        new SingleFileConfig { FilePath = "Data/巴菲特投资名言.docx", DocumentId = "example002" }
+                    },
+                    FolderConfigs = new List<FolderConfig>
+                    {
+                        new FolderConfig
+                        {
+                            FolderPath = @"D:\src\ScTrials\src\StoneToolkit\StoneToolkit.Common",
+                            IncludePatterns = new[] { "*.cs", "*.xaml" },
+                            ExcludePaths = new[] { @"SubFolder\File.cs" }
+                        },
+                    }
+                },
+            };
 
-                // 定义包含和排除的文件集合
-                var includePatterns = new[] { "*.cs", "*.xaml" };
-                var excludePaths = new[] { "SubFolder\\File.cs" };
-
-                // 导入指定文件夹下的所有符合条件的文件
-                var importCount = await ragService.ImportDocumentsFromFolderAsync("D:/src/Fork/kernel-memory/mydemos/VectorDbDemo", includePatterns, excludePaths);
-                Console.WriteLine($"Imported {importCount} files.");
+            // 检查并导入每个索引
+            foreach (var config in indexConfigs)
+            {
+                var indexes = await ragService.ListIndexesAsync();
+                if (!indexes.Contains(config.IndexName))
+                {
+                    Console.WriteLine($"Index '{config.IndexName}' does not exist. Importing documents...");
+                    await ImportDocumentsAsync(ragService, config);
+                }
+                else
+                {
+                    Console.WriteLine($"Index '{config.IndexName}' already exists. Skipping import.");
+                }
             }
 
+            // 交互式搜索
             while (true)
             {
                 Console.WriteLine("Please enter your question (type 'Exit' to exit):");
@@ -46,8 +72,37 @@ namespace VectorDbDemo
 
                 if (!string.IsNullOrWhiteSpace(userInput))
                 {
-                    var result = await ragService.SearchAsync(userInput);
+                    // 默认在第一个索引中搜索
+                    var result = await ragService.SearchAsync(userInput, index: indexConfigs[0].IndexName);
                     ragService.PrintSearchResult(result);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 导入文档的方法
+        /// </summary>
+        /// <param name="ragService">RAGService 实例</param>
+        /// <param name="config">索引配置</param>
+        private static async Task ImportDocumentsAsync(RAGService ragService, IndexConfig config)
+        {
+            // 导入单个文件
+            foreach (var fileConfig in config.SingleFiles)
+            {
+                await ragService.ImportDocumentAsync(fileConfig.FilePath, fileConfig.DocumentId, config.IndexName);
+            }
+
+            // 导入多个文件夹中的文件
+            if (config.FolderConfigs != null)
+            {
+                foreach (var folderConfig in config.FolderConfigs)
+                {
+                    var importCount = await ragService.ImportDocumentsFromFolderAsync(
+                        folderConfig.FolderPath,
+                        folderConfig.IncludePatterns,
+                        folderConfig.ExcludePaths,
+                        config.IndexName);
+                    Console.WriteLine($"Imported {importCount} files from '{folderConfig.FolderPath}' to index '{config.IndexName}'.");
                 }
             }
         }

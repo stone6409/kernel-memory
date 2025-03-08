@@ -62,7 +62,7 @@ public class RAGService
     /// <param name="filePath">文档路径</param>
     /// <param name="documentId">文档 ID</param>
     /// <returns>文档 ID</returns>
-    public async Task<string> ImportDocumentAsync(string filePath, string documentId)
+    public async Task<string> ImportDocumentAsync(string filePath, string documentId, string? index = null)
     {
         if (!File.Exists(filePath))
         {
@@ -70,7 +70,7 @@ public class RAGService
         }
 
         Console.WriteLine("Importing doucement...");
-        var docId = await _memory.ImportDocumentAsync(filePath, documentId);
+        var docId = await _memory.ImportDocumentAsync(filePath, documentId, null, index);
         Console.WriteLine($"- Document Id: {docId}");
         return docId;
     }
@@ -82,10 +82,10 @@ public class RAGService
     /// <param name="minRelevance">最小相关性</param>
     /// <param name="limit">返回结果数量</param>
     /// <returns>搜索结果</returns>
-    public async Task<SearchResult> SearchAsync(string query, float minRelevance = 0.4f, int limit = 2)
+    public async Task<SearchResult> SearchAsync(string query, string? index = null, float minRelevance = 0.4f, int limit = 2)
     {
         Console.WriteLine("Searching doucement...");
-        var result = await _memory.SearchAsync(query, minRelevance: minRelevance, limit: limit);
+        var result = await _memory.SearchAsync(query, index: index, minRelevance: minRelevance, limit: limit);
         return result;
     }
 
@@ -128,7 +128,7 @@ public class RAGService
     /// <param name="includePatterns">包含文件的模式集合（例如：*.cs, *.xaml）</param>
     /// <param name="excludePaths">排除文件的路径集合（例如：SubFolder\File.cs）</param>
     /// <returns>导入的文件数量</returns>
-    public async Task<int> ImportDocumentsFromFolderAsync(string folderPath, IEnumerable<string> includePatterns, IEnumerable<string> excludePaths = null)
+    public async Task<int> ImportDocumentsFromFolderAsync(string folderPath, IEnumerable<string> includePatterns, IEnumerable<string> excludePaths = null, string? index = null)
     {
         if (!Directory.Exists(folderPath))
         {
@@ -154,9 +154,19 @@ public class RAGService
         {
             // 获取文件相对于 folderPath 的相对路径作为 documentId
             var documentId = Path.GetRelativePath(folderPath, file);
-            await ImportDocumentAsync(file, documentId);
+            await ImportDocumentAsync(file, documentId, index);
         }
 
         return files.Count;
+    }
+
+    /// <summary>
+    /// 获取所有索引的名称
+    /// </summary>
+    /// <returns>索引名称列表</returns>
+    public async Task<IEnumerable<string>> ListIndexesAsync()
+    {
+        var indexes = await _memory.ListIndexesAsync();
+        return indexes.Select(index => index.Name);
     }
 }
