@@ -122,27 +122,38 @@ public class RAGService
     }
 
     /// <summary>
-    /// 导入指定文件夹下的所有 .cs 和 .xaml 文件
+    /// 导入指定文件夹下的所有 .cs 和 .xaml 文件，支持包含和排除文件集合
     /// </summary>
     /// <param name="folderPath">文件夹路径</param>
+    /// <param name="includePatterns">包含文件的模式集合（例如：*.cs, *.xaml）</param>
+    /// <param name="excludePaths">排除文件的路径集合（例如：SubFolder\File.cs）</param>
     /// <returns>导入的文件数量</returns>
-    public async Task<int> ImportDocumentsFromFolderAsync(string folderPath)
+    public async Task<int> ImportDocumentsFromFolderAsync(string folderPath, IEnumerable<string> includePatterns, IEnumerable<string> excludePaths = null)
     {
         if (!Directory.Exists(folderPath))
         {
             throw new DirectoryNotFoundException($"Folder not found: {folderPath}");
         }
 
-        // 获取所有 .cs 和 .xaml 文件
-        var files = Directory.GetFiles(folderPath, "*.*", SearchOption.AllDirectories)
-            .Where(file => file.EndsWith(".cs", StringComparison.OrdinalIgnoreCase) ||
-                           file.EndsWith(".xaml", StringComparison.OrdinalIgnoreCase))
+        // 获取所有符合条件的文件
+        var files = includePatterns
+            .SelectMany(pattern => Directory.GetFiles(folderPath, pattern, SearchOption.AllDirectories))
+            .Distinct()
             .ToList();
+
+        // 如果存在排除文件集合，过滤掉排除的文件
+        if (excludePaths != null && excludePaths.Any())
+        {
+            files = files
+                .Where(file => !excludePaths.Any(exclude => file.EndsWith(exclude, StringComparison.OrdinalIgnoreCase)))
+                .ToList();
+        }
 
         // 逐个导入文件
         foreach (var file in files)
         {
-            var documentId = Path.GetFileNameWithoutExtension(file); // 使用文件名作为文档 ID
+            // 获取文件相对于 folderPath 的相对路径作为 documentId
+            var documentId = Path.GetRelativePath(folderPath, file);
             await ImportDocumentAsync(file, documentId);
         }
 

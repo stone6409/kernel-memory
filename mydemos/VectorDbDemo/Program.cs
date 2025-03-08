@@ -26,6 +26,14 @@ namespace VectorDbDemo
                 // 导入文档
                 await ragService.ImportDocumentAsync(filePath: "Data/Persons.txt", documentId: "example001");
                 await ragService.ImportDocumentAsync(filePath: "Data/巴菲特投资名言.docx", documentId: "example002");
+
+                // 定义包含和排除的文件集合
+                var includePatterns = new[] { "*.cs", "*.xaml" };
+                var excludePaths = new[] { "SubFolder\\File.cs" };
+
+                // 导入指定文件夹下的所有符合条件的文件
+                var importCount = await ragService.ImportDocumentsFromFolderAsync("D:/src/Fork/kernel-memory/mydemos/VectorDbDemo", includePatterns, excludePaths);
+                Console.WriteLine($"Imported {importCount} files.");
             }
 
             while (true)
