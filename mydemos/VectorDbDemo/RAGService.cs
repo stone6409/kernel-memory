@@ -4,6 +4,7 @@ using Microsoft.KernelMemory.Configuration;
 using Microsoft.KernelMemory.DocumentStorage.DevTools;
 using Microsoft.KernelMemory.FileSystem.DevTools;
 using Microsoft.KernelMemory.MemoryStorage.DevTools;
+using Microsoft.KernelMemory.Pipeline;
 
 namespace VectorDbDemo;
 
@@ -70,8 +71,24 @@ public class RAGService
         }
 
         Console.WriteLine("Importing doucement...");
-        var docId = await _memory.ImportDocumentAsync(filePath, documentId, null, index);
-        Console.WriteLine($"- Document Id: {docId}");
+
+        string docId = null;
+        try
+        {
+            docId = await _memory.ImportDocumentAsync(filePath, documentId, null, index);
+            Console.WriteLine($"- Document Id: {docId}");
+        }
+        catch (MimeTypeException mimeTypeException)
+        {
+            string content = File.ReadAllText(filePath);
+            docId = await _memory.ImportTextAsync(content, documentId, null, index);
+            Console.WriteLine($"- Document Id: {docId}");
+        }
+        catch (Exception ex)
+        {
+
+        }
+       
         return docId;
     }
 
@@ -82,7 +99,7 @@ public class RAGService
     /// <param name="minRelevance">最小相关性</param>
     /// <param name="limit">返回结果数量</param>
     /// <returns>搜索结果</returns>
-    public async Task<SearchResult> SearchAsync(string query, string? index = null, float minRelevance = 0.4f, int limit = 2)
+    public async Task<SearchResult> SearchAsync(string query, string? index = null, float minRelevance = 0.4f, int limit = 10)
     {
         Console.WriteLine("Searching doucement...");
         var result = await _memory.SearchAsync(query, index: index, minRelevance: minRelevance, limit: limit);

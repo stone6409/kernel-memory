@@ -56,6 +56,7 @@ public static class Program
                     },
                 },
                 new() {
+                    IndexName = "StoneToolkit",
                     FolderConfigs = new List<FolderConfig>
                     {
                         new() {
