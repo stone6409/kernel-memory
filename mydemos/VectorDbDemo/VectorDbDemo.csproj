@@ -9,13 +9,19 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="巴菲特投资名言.docx">
+    <Content Include="Data\巴菲特投资名言.docx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
 
     <ItemGroup>
         <ProjectReference Include="..\..\extensions\KM\KernelMemory\KernelMemory.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Update="Data\Persons.txt">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
     </ItemGroup>
 
 </Project>

@@ -275,6 +275,7 @@ public sealed class SearchClient : ISearchClient
     }
 
     /// <summary>
+    /// 关键点：为询问和查询处理内存记录
     /// Process memory records for ASK and SEARCH calls
     /// </summary>
     /// <param name="result">Current state of the result</param>

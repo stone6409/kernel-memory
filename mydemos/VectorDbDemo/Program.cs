@@ -24,7 +24,8 @@ namespace VectorDbDemo
             if (!StorageExists)
             {
                 // 导入文档
-                await ragService.ImportDocumentAsync(filePath: "巴菲特投资名言.docx", documentId: "example207");
+                await ragService.ImportDocumentAsync(filePath: "Data/Persons.txt", documentId: "example001");
+                await ragService.ImportDocumentAsync(filePath: "Data/巴菲特投资名言.docx", documentId: "example002");
             }
 
             while (true)
