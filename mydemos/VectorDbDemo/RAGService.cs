@@ -120,4 +120,32 @@ public class RAGService
             Console.WriteLine("--------------------------");
         }
     }
+
+    /// <summary>
+    /// 导入指定文件夹下的所有 .cs 和 .xaml 文件
+    /// </summary>
+    /// <param name="folderPath">文件夹路径</param>
+    /// <returns>导入的文件数量</returns>
+    public async Task<int> ImportDocumentsFromFolderAsync(string folderPath)
+    {
+        if (!Directory.Exists(folderPath))
+        {
+            throw new DirectoryNotFoundException($"Folder not found: {folderPath}");
+        }
+
+        // 获取所有 .cs 和 .xaml 文件
+        var files = Directory.GetFiles(folderPath, "*.*", SearchOption.AllDirectories)
+            .Where(file => file.EndsWith(".cs", StringComparison.OrdinalIgnoreCase) ||
+                           file.EndsWith(".xaml", StringComparison.OrdinalIgnoreCase))
+            .ToList();
+
+        // 逐个导入文件
+        foreach (var file in files)
+        {
+            var documentId = Path.GetFileNameWithoutExtension(file); // 使用文件名作为文档 ID
+            await ImportDocumentAsync(file, documentId);
+        }
+
+        return files.Count;
+    }
 }
