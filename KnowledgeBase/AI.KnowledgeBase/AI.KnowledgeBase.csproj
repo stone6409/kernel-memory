@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+    <PropertyGroup>
+        <ManagePackageVersionsCentrally>false</ManagePackageVersionsCentrally>
+    </PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="TencentCloudSDK" Version="3.0.1377" />
+		<PackageReference Include="Microsoft.KernelMemory.Core" Version="0.98.250508.3" />
+		<PackageReference Include="Microsoft.KernelMemory.AI.Ollama" Version="0.98.250508.3" />
+	</ItemGroup>
+
+</Project>
