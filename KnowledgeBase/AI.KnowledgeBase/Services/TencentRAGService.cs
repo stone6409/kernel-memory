@@ -3,7 +3,11 @@ using Microsoft.KernelMemory;
 using Microsoft.KernelMemory.Configuration;
 using Microsoft.KernelMemory.DocumentStorage.DevTools;
 using Microsoft.KernelMemory.FileSystem.DevTools;
+using Microsoft.KernelMemory.Handlers;
 using Microsoft.KernelMemory.MemoryStorage.DevTools;
+using Microsoft.KernelMemory.Pipeline;
+using Microsoft.SemanticKernel.Memory;
+using NetTopologySuite.Utilities;
 using System;
 
 namespace AI.KnowledgeBase.Services
@@ -125,7 +129,12 @@ namespace AI.KnowledgeBase.Services
                 throw new InvalidOperationException("腾讯云SecretId和SecretKey未配置。请设置环境变量TENCENT_SECRET_ID和TENCENT_SECRET_KEY，或在TencentConfig中提供。");
             }
 
-            return builder.Build();
+            builder.WithoutDefaultHandlers();
+            var memory = builder.Build<MemoryServerless>();
+
+            memory.Orchestrator.AddDefaultHandlers();
+
+            return memory;
         }
 
         /// <summary>
