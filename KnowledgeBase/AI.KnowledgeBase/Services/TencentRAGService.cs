@@ -82,7 +82,7 @@ namespace AI.KnowledgeBase.Services
             {
                 MaxTokensPerParagraph = _chunkSize,
                 //OverlappingTokens = 40,
-                OverlappingTokens = Math.Max(10, _chunkSize / 10),  // 10%的重叠，至少10个标记
+                OverlappingTokens = Math.Max(10, _chunkSize * 2 / 10),  // 20%的重叠，至少10个标记
             };
 
             // 配置存储
