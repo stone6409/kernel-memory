@@ -132,7 +132,7 @@ namespace AI.KnowledgeBase.Services
             builder.WithoutDefaultHandlers();
             var memory = builder.Build<MemoryServerless>();
 
-            memory.Orchestrator.AddDefaultHandlers();
+            memory.Orchestrator.AddDefaultHandlers2();
 
             return memory;
         }
