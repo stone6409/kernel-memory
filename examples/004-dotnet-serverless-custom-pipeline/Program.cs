@@ -24,6 +24,7 @@
 using Microsoft.KernelMemory;
 using Microsoft.KernelMemory.Handlers;
 
+// 关键示例：使用自定义管线，不使用默认管线Handlers
 var memoryBuilder = new KernelMemoryBuilder()
     .WithoutDefaultHandlers() // remove default handlers, added manually below
     .WithOpenAIDefaults(Environment.GetEnvironmentVariable("OPENAI_API_KEY")!);

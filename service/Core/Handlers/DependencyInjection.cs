@@ -31,6 +31,7 @@ public static partial class KernelMemoryBuilderExtensions
 /// </summary>
 public static partial class DependencyInjection
 {
+    // 关键方法：添加默认处理器
     /// <summary>
     /// Register default handlers in the synchronous orchestrator (e.g. when not using queues)
     /// </summary>

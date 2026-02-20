@@ -153,6 +153,7 @@ public sealed class InProcessPipelineOrchestrator : BaseOrchestrator
         }
     }
 
+    // 关键点：运行管线
     ///<inheritdoc />
     public override async Task RunPipelineAsync(DataPipeline pipeline, CancellationToken cancellationToken = default)
     {

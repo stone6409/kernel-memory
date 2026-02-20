@@ -15,6 +15,7 @@ using Microsoft.KernelMemory.Pipeline;
 
 namespace Microsoft.KernelMemory.Handlers;
 
+// 关键类：文本分块处理器
 public sealed class TextPartitioningHandler : IPipelineStepHandler
 {
     private readonly IPipelineOrchestrator _orchestrator;

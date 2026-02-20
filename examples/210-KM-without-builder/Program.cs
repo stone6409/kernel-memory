@@ -22,6 +22,7 @@ using Microsoft.KernelMemory.Prompts;
 using Microsoft.KernelMemory.Safety.AzureAIContentSafety;
 using Microsoft.KernelMemory.Search;
 
+// 关键示例：完全手动组合所有类
 /// <summary>
 /// This example shows how to create an instance of Kernel Memory without using Kernel Memory builder
 /// and without .NET Dependency Injection, in other words how to compose all classes manually.
