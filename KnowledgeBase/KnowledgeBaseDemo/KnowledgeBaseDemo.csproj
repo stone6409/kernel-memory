@@ -16,7 +16,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.KernelMemory.Core" Version="0.98.250508.3" />
+        <ProjectReference Include="..\..\extensions\KM\KernelMemory\KernelMemory.csproj" />
     </ItemGroup>
 
 
