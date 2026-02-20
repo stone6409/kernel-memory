@@ -6,6 +6,8 @@ using Microsoft.KernelMemory.Chunkers;
 using Microsoft.KernelMemory.Configuration;
 using Microsoft.KernelMemory.Diagnostics;
 using Microsoft.KernelMemory.Pipeline;
+using Microsoft.KernelMemory.Context;
+using Microsoft.KernelMemory.Extensions;
 
 namespace AI.KnowledgeBase.Chinese
 {

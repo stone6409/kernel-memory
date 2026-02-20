@@ -19,7 +19,7 @@ namespace AI.KnowledgeBase.Chinese
         /// <summary>
         /// 重写分块方法，添加中文优化
         /// </summary>
-        public override List<string> Split(string text, PlainTextChunkerOptions options)
+        public List<string> Split(string text, PlainTextChunkerOptions options)
         {
             if (string.IsNullOrEmpty(text))
                 return new List<string>();
