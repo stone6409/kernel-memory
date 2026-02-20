@@ -1,4 +1,5 @@
-﻿using Microsoft.KernelMemory;
+﻿using AI.KnowledgeBase.Chinese;
+using Microsoft.KernelMemory;
 using Microsoft.KernelMemory.Handlers;
 using Microsoft.KernelMemory.Pipeline;
 
@@ -12,7 +13,7 @@ namespace AI.KnowledgeBase.Services
 #pragma warning restore KMEXP04 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
         {
             syncOrchestrator.AddHandler<TextExtractionHandler>(Constants.PipelineStepsExtract);
-            syncOrchestrator.AddHandler<TextPartitioningHandler>(Constants.PipelineStepsPartition);
+            syncOrchestrator.AddHandler<CustomTextPartitioningHandler>(Constants.PipelineStepsPartition);
             syncOrchestrator.AddHandler<SummarizationHandler>(Constants.PipelineStepsSummarize);
             syncOrchestrator.AddHandler<GenerateEmbeddingsHandler>(Constants.PipelineStepsGenEmbeddings);
             syncOrchestrator.AddHandler<SaveRecordsHandler>(Constants.PipelineStepsSaveRecords);
