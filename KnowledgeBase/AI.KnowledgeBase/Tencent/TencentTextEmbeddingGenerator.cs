@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using AI.KnowledgeBase.Chinese;
+using Microsoft.Extensions.Logging;
 using Microsoft.KernelMemory;
 using Microsoft.KernelMemory.AI;
 using Microsoft.KernelMemory.Context;
@@ -36,8 +37,8 @@ namespace AI.KnowledgeBase.Tencent
             this._embeddingService = embeddingService ?? throw new ArgumentNullException(nameof(embeddingService));
             this._log = (loggerFactory ?? DefaultLogger.Factory).CreateLogger<TencentTextEmbeddingGenerator>();
 
-            // 使用默认的CL100K分词器
-            textTokenizer ??= new CL100KTokenizer();
+            // 使用中文分词器
+            textTokenizer ??= new ChineseTokenizer();
             this._textTokenizer = textTokenizer;
 
             this._contextProvider = contextProvider ?? new RequestContextProvider();
