@@ -18,4 +18,8 @@
         <ProjectReference Include="..\..\extensions\KM\KernelMemory\KernelMemory.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="MemoryStorage\" />
+    </ItemGroup>
+
 </Project>
