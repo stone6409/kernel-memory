@@ -88,7 +88,7 @@ namespace AI.KnowledgeBase.Services
         }
 
         /// <inheritdoc/>
-        public virtual async Task<SearchResult> SearchAsync(string query, string? index = null, float minRelevance = 0.3f, int limit = 10)
+        public virtual async Task<SearchResult> SearchAsync(string query, string? index = null, float minRelevance = 0.2f, int limit = 10)
         {
             if (string.IsNullOrEmpty(query))
             {
@@ -110,7 +110,7 @@ namespace AI.KnowledgeBase.Services
         }
 
         /// <inheritdoc/>
-        public virtual async Task<MemoryAnswer> AskAsync(string question, string? index = null, float minRelevance = 0.4f)
+        public virtual async Task<MemoryAnswer> AskAsync(string question, string? index = null, float minRelevance = 0.3f)
         {
             if (string.IsNullOrEmpty(question))
             {
