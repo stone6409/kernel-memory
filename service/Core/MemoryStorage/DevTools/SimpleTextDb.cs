@@ -96,6 +96,7 @@ public class SimpleTextDb : IMemoryDb
             records[r.Id] = r;
         }
 
+        // 只关注有意义的单词，忽略标点符号和其他特殊字符
         var words = Regex.Replace(text, "[^a-zA-Z0-9_]+", " ")
             .Split(' ').Select(x => x.Trim()).Where(x => !string.IsNullOrEmpty(x)).ToList();
 
