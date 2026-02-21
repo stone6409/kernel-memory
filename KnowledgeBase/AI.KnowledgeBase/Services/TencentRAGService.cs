@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using AI.KnowledgeBase.MemoryStorage;
+using Microsoft.Extensions.Configuration;
 using Microsoft.KernelMemory;
 using Microsoft.KernelMemory.Configuration;
 using Microsoft.KernelMemory.DocumentStorage.DevTools;
@@ -106,6 +107,13 @@ namespace AI.KnowledgeBase.Services
                 StorageType = FileSystemTypes.Disk,
             };
 
+            // 配置文本数据库
+            var bm25DbConfig = new SimpleBM25DbConfig
+            {
+                Directory = _storageFolder,
+                StorageType = FileSystemTypes.Disk,
+            };
+
             // 配置搜索客户端
             var searchClientConfig = new SearchClientConfig
             {
@@ -116,8 +124,9 @@ namespace AI.KnowledgeBase.Services
             var builder = new KernelMemoryBuilder()
                 .WithCustomTextPartitioningOptions(textPartitioningOptions)
                 .WithSimpleFileStorage(storageConfig)
-                .WithSimpleTextDb(textDbConfig)
+                //.WithSimpleTextDb(textDbConfig)
                 //.WithSimpleVectorDb(vectorDbConfig)
+                .WithSimpleBM25DbDb(bm25DbConfig)
                 .WithSearchClientConfig(searchClientConfig)
                 .WithoutTextGenerator();
 
