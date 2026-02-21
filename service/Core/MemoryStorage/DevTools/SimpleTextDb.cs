@@ -97,7 +97,10 @@ public class SimpleTextDb : IMemoryDb
         }
 
         // 只关注有意义的单词，忽略标点符号和其他特殊字符
-        var words = Regex.Replace(text, "[^a-zA-Z0-9_]+", " ")
+        //var words = Regex.Replace(text, "[^a-zA-Z0-9_]+", " ")
+        //    .Split(' ').Select(x => x.Trim()).Where(x => !string.IsNullOrEmpty(x)).ToList();
+        // 使用 \p{L} 匹配所有Unicode字母（包括中文、日文、韩文等）
+        var words = Regex.Replace(text, @"[^\p{L}0-9_]+", " ")
             .Split(' ').Select(x => x.Trim()).Where(x => !string.IsNullOrEmpty(x)).ToList();
 
         var similarity = new Dictionary<string, int>();
