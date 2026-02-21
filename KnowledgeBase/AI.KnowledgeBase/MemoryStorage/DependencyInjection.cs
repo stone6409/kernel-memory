@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft. All rights reserved.
 
 using AI.KnowledgeBase.MemoryStorage.Keyword;
+using AI.KnowledgeBase.MemoryStorage.Semantic;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.KernelMemory;
 using Microsoft.KernelMemory.FileSystem.DevTools;
@@ -25,6 +26,19 @@ public static partial class KernelMemoryBuilderExtensions
         builder.Services.AddKeywordMemoryDbAsMemoryDb(directory);
         return builder;
     }
+
+    public static IKernelMemoryBuilder WithSemanticMemoryDb(this IKernelMemoryBuilder builder, SemanticMemoryDbConfig? config = null)
+    {
+        builder.Services.AddSemanticMemoryDbAsMemoryDb(config ?? new SemanticMemoryDbConfig());
+        return builder;
+    }
+
+    public static IKernelMemoryBuilder WithSemanticMemoryDb(this IKernelMemoryBuilder builder, string directory)
+    {
+        builder.Services.AddSemanticMemoryDbAsMemoryDb(directory);
+        return builder;
+    }
+
 }
 
 /// <summary>
@@ -44,4 +58,18 @@ public static partial class DependencyInjection
         var config = new KeywordMemoryDbConfig { StorageType = FileSystemTypes.Disk, Directory = directory };
         return services.AddKeywordMemoryDbAsMemoryDb(config);
     }
+
+    public static IServiceCollection AddSemanticMemoryDbAsMemoryDb(this IServiceCollection services, SemanticMemoryDbConfig? config = null)
+    {
+        return services
+            .AddSingleton<SemanticMemoryDbConfig>(config ?? new SemanticMemoryDbConfig())
+            .AddSingleton<IMemoryDb, SemanticMemoryDb>();
+    }
+
+    public static IServiceCollection AddSemanticMemoryDbAsMemoryDb(this IServiceCollection services, string directory)
+    {
+        var config = new SemanticMemoryDbConfig { StorageType = FileSystemTypes.Disk, Directory = directory };
+        return services.AddSemanticMemoryDbAsMemoryDb(config);
+    }
+
 }
