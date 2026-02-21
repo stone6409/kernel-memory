@@ -15,7 +15,7 @@ using Microsoft.KernelMemory.Diagnostics;
 using Microsoft.KernelMemory.FileSystem.DevTools;
 using Microsoft.KernelMemory.MemoryStorage;
 
-namespace AI.KnowledgeBase.MemoryStorage.BM25;
+namespace AI.KnowledgeBase.MemoryStorage.Keyword;
 
 /// <summary>
 /// BM25-based text similarity implementation for development and testing.

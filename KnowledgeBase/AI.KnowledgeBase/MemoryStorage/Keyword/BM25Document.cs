@@ -1,7 +1,7 @@
 ﻿/// <summary>
 /// BM25Document representation for BM25 calculation
 /// </summary>
-namespace AI.KnowledgeBase.MemoryStorage.BM25
+namespace AI.KnowledgeBase.MemoryStorage.Keyword
 {
     public class BM25Document
     {

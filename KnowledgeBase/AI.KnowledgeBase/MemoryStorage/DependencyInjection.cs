@@ -1,6 +1,6 @@
 ﻿// Copyright (c) Microsoft. All rights reserved.
 
-using AI.KnowledgeBase.MemoryStorage.BM25;
+using AI.KnowledgeBase.MemoryStorage.Keyword;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.KernelMemory;
 using Microsoft.KernelMemory.FileSystem.DevTools;

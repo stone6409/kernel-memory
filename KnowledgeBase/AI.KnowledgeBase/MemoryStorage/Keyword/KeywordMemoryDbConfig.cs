@@ -2,7 +2,7 @@
 
 using Microsoft.KernelMemory.FileSystem.DevTools;
 
-namespace AI.KnowledgeBase.MemoryStorage.BM25;
+namespace AI.KnowledgeBase.MemoryStorage.Keyword;
 
 /// <summary>
 /// Configuration for SimpleBM25Db

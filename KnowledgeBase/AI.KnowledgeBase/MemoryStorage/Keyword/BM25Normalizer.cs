@@ -1,4 +1,4 @@
-﻿namespace AI.KnowledgeBase.MemoryStorage.BM25
+﻿namespace AI.KnowledgeBase.MemoryStorage.Keyword
 {
     public static class BM25Normalizer
     {

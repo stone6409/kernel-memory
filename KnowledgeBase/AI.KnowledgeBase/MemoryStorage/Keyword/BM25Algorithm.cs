@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace AI.KnowledgeBase.MemoryStorage.BM25;
+namespace AI.KnowledgeBase.MemoryStorage.Keyword;
 
 /// <summary>
 /// BM25 algorithm implementation for text similarity scoring

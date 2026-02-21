@@ -1,5 +1,5 @@
 ﻿using AI.KnowledgeBase.MemoryStorage;
-using AI.KnowledgeBase.MemoryStorage.BM25;
+using AI.KnowledgeBase.MemoryStorage.Keyword;
 using Microsoft.Extensions.Configuration;
 using Microsoft.KernelMemory;
 using Microsoft.KernelMemory.Configuration;

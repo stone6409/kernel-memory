@@ -15,7 +15,7 @@ using Microsoft.KernelMemory.Diagnostics;
 using Microsoft.KernelMemory.FileSystem.DevTools;
 using Microsoft.KernelMemory.MemoryStorage;
 
-namespace AI.KnowledgeBase.MemoryStorage.Vector;
+namespace AI.KnowledgeBase.MemoryStorage.Semantic;
 
 /// <summary>
 /// Basic vector db implementation, designed for tests and demos only.

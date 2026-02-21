@@ -2,7 +2,7 @@
 
 using Microsoft.KernelMemory.FileSystem.DevTools;
 
-namespace AI.KnowledgeBase.MemoryStorage.Vector;
+namespace AI.KnowledgeBase.MemoryStorage.Semantic;
 
 /// <summary>
 /// Configuration for SimpleVectorDb
