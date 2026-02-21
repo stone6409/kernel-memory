@@ -8,10 +8,11 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+using Microsoft.KernelMemory;
 using Microsoft.KernelMemory.Diagnostics;
 using Microsoft.KernelMemory.Pipeline;
 
-namespace Microsoft.KernelMemory.FileSystem.DevTools;
+namespace AI.KnowledgeBase.FileSystem;
 
 #pragma warning disable CA1031 // need to catch all exceptions
 

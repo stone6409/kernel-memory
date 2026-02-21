@@ -5,8 +5,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.KernelMemory;
 
-namespace Microsoft.KernelMemory.FileSystem.DevTools;
+namespace AI.KnowledgeBase.FileSystem;
 
 internal interface IFileSystem
 {

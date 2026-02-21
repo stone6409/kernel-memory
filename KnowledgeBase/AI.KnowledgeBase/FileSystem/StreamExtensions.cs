@@ -2,7 +2,7 @@
 
 using System.IO;
 
-namespace Microsoft.KernelMemory.FileSystem.DevTools;
+namespace AI.KnowledgeBase.FileSystem;
 
 internal static class StreamExtensions
 {

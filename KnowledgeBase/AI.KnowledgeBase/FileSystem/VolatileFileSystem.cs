@@ -9,10 +9,11 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+using Microsoft.KernelMemory;
 using Microsoft.KernelMemory.Diagnostics;
 using Microsoft.KernelMemory.Pipeline;
 
-namespace Microsoft.KernelMemory.FileSystem.DevTools;
+namespace AI.KnowledgeBase.FileSystem;
 
 /// <summary>
 /// Simple file system abstraction that saves text files in memory.
