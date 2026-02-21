@@ -1,5 +1,4 @@
-﻿
-namespace AI.KnowledgeBase.MemoryStorage
+﻿namespace AI.KnowledgeBase.MemoryStorage.BM25
 {
     public static class BM25Normalizer
     {
@@ -48,8 +47,8 @@ namespace AI.KnowledgeBase.MemoryStorage
         /// 使用 min-max 归一化到指定范围
         /// </summary>
         public static Dictionary<string, double> MinMaxNormalize(
-            Dictionary<string, double> scores, 
-            double minRange = 0, 
+            Dictionary<string, double> scores,
+            double minRange = 0,
             double maxRange = 1)
         {
             if (scores.Count == 0)

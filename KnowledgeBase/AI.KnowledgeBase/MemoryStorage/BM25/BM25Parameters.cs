@@ -1,8 +1,7 @@
 ﻿/// <summary>
 /// BM25 algorithm parameters
 /// </summary>
-
-namespace AI.KnowledgeBase.MemoryStorage
+namespace AI.KnowledgeBase.MemoryStorage.BM25
 {
     public class BM25Parameters
     {

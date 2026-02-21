@@ -17,7 +17,7 @@ using Microsoft.KernelMemory.Diagnostics;
 using Microsoft.KernelMemory.FileSystem.DevTools;
 using Microsoft.KernelMemory.MemoryStorage;
 
-namespace AI.KnowledgeBase.MemoryStorage;
+namespace AI.KnowledgeBase.MemoryStorage.BM25;
 
 /// <summary>
 /// BM25-based text similarity implementation for development and testing.
@@ -266,7 +266,7 @@ public class SimpleBM25Db : IMemoryDb
                 // Check if the tag name + value is present
                 for (int index = 0; match && index < condition.Value.Count; index++)
                 {
-                    match = match && (tags.ContainsKey(condition.Key) && tags[condition.Key].Contains(condition.Value[index]));
+                    match = match && tags.ContainsKey(condition.Key) && tags[condition.Key].Contains(condition.Value[index]);
                 }
             }
 

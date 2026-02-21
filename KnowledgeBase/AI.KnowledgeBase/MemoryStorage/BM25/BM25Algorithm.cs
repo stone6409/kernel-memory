@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace AI.KnowledgeBase.MemoryStorage;
+namespace AI.KnowledgeBase.MemoryStorage.BM25;
 
 /// <summary>
 /// BM25 algorithm implementation for text similarity scoring
@@ -168,12 +168,12 @@ public class BM25Algorithm
         if (!_parameters.UseLengthNormalization)
         {
             // Without length normalization
-            return (termFrequency * (_parameters.K1 + 1)) / (termFrequency + _parameters.K1);
+            return termFrequency * (_parameters.K1 + 1) / (termFrequency + _parameters.K1);
         }
 
         // With length normalization
         var lengthNormalization = 1 - _parameters.B + _parameters.B * (docLength / avgDocLength);
-        return (termFrequency * (_parameters.K1 + 1)) / (termFrequency + _parameters.K1 * lengthNormalization);
+        return termFrequency * (_parameters.K1 + 1) / (termFrequency + _parameters.K1 * lengthNormalization);
     }
 
     /// <summary>
@@ -201,7 +201,7 @@ public class BM25Algorithm
     public List<BM25Document> CreateDocuments(Dictionary<string, string> idTextPairs, object? metadata = null)
     {
         var documents = new List<BM25Document>();
-        
+
         foreach (var pair in idTextPairs)
         {
             documents.Add(CreateDocument(pair.Key, pair.Value, metadata));
