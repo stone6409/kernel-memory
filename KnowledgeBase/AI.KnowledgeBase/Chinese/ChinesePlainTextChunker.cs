@@ -25,35 +25,87 @@ namespace AI.KnowledgeBase.Chinese
 
         private readonly ITextTokenizer _tokenizer;
 
-        // Prioritized list of characters to split sentence from sentence.
+        //// Prioritized list of characters to split sentence from sentence.
+        //private static readonly SeparatorTrie s_explicitSeparators = new([
+        //    // Symbol + space
+        //    ". ", ".\t", ".\n", "\n\n", // note: covers also the case of multiple '.' like "....\n"
+        //    "? ", "?\t", "?\n", // note: covers also the case of multiple '?' and '!?' like "?????\n" and "?!?\n"
+        //    "! ", "!\t", "!\n", // note: covers also the case of multiple '!' and '?!' like "!!!\n" and "!?!\n"
+        //    "⁉ ", "⁉\t", "⁉\n",
+        //    "⁈ ", "⁈\t", "⁈\n",
+        //    "⁇ ", "⁇\t", "⁇\n",
+        //    "… ", "…\t", "…\n",
+        //    // Multi-char separators without space, ordered by length
+        //    "!!!!", "????", "!!!", "???", "?!?", "!?!", "!?", "?!", "!!", "??", "....", "...", "..",
+        //    // 1 char separators without space
+        //    ".", "?", "!", "⁉", "⁈", "⁇", "…",
+        //]);
+
         private static readonly SeparatorTrie s_explicitSeparators = new([
-            // Symbol + space
-            ". ", ".\t", ".\n", "\n\n", // note: covers also the case of multiple '.' like "....\n"
-            "? ", "?\t", "?\n", // note: covers also the case of multiple '?' and '!?' like "?????\n" and "?!?\n"
-            "! ", "!\t", "!\n", // note: covers also the case of multiple '!' and '?!' like "!!!\n" and "!?!\n"
+            // 英文标点 + 空格/制表符/换行
+            ". ", ".\t", ".\n", "\n\n",
+            "? ", "?\t", "?\n",
+            "! ", "!\t", "!\n",
+
+            // 中文标点 + 空格/制表符/换行（新增）
+            "。 ", "。\t", "。\n",
+            "？ ", "？\t", "？\n",
+            "！ ", "！\t", "！\n",
+            "； ", "；\t", "；\n",
+            "： ", "：\t", "：\n",
+            "， ", "，\t", "，\n",
+
+            // Unicode标点符号 + 空格/制表符/换行（保留）
             "⁉ ", "⁉\t", "⁉\n",
             "⁈ ", "⁈\t", "⁈\n",
             "⁇ ", "⁇\t", "⁇\n",
             "… ", "…\t", "…\n",
-            // Multi-char separators without space, ordered by length
+
+            // 多字符分隔符（英文）
             "!!!!", "????", "!!!", "???", "?!?", "!?!", "!?", "?!", "!!", "??", "....", "...", "..",
-            // 1 char separators without space
-            ".", "?", "!", "⁉", "⁈", "⁇", "…",
+
+            // 单字符分隔符（英文 + Unicode + 中文）
+            ".", "?", "!", "⁉", "⁈", "⁇", "…",  // 英文和Unicode
+            "。", "？", "！", "；", "：", "，",  // 中文（新增）
         ]);
 
-        // Prioritized list of characters to split inside a sentence.
+        //// Prioritized list of characters to split inside a sentence.
+        //private static readonly SeparatorTrie s_potentialSeparators = new([
+        //    "; ", ";\t", ";\n", ";",
+        //    "} ", "}\t", "}\n", "}", // note: curly brace without spaces is up here because it's a common code ending char, more important than ')' or ']'
+        //    ") ", ")\t", ")\n",
+        //    "] ", "]\t", "]\n",
+        //    ")", "]",
+        //]);
+
         private static readonly SeparatorTrie s_potentialSeparators = new([
+            // 英文
             "; ", ";\t", ";\n", ";",
-            "} ", "}\t", "}\n", "}", // note: curly brace without spaces is up here because it's a common code ending char, more important than ')' or ']'
+            "} ", "}\t", "}\n", "}",
             ") ", ")\t", ")\n",
             "] ", "]\t", "]\n",
             ")", "]",
+
+            // 中文（新增）
+            "； ", "；\t", "；\n", "；",
+            "） ", "）\t", "）\n", "）",
+            "】 ", "】\t", "】\n", "】",
         ]);
 
-        // Prioritized list of characters to split inside a sentence when other splits are not found.
+        //// Prioritized list of characters to split inside a sentence when other splits are not found.
+        //private static readonly SeparatorTrie s_weakSeparators1 = new([
+        //    ": ", ":", // note: \n \t make no difference with this char
+        //    ", ", ",", // note: \n \t make no difference with this char
+        //]);
+
         private static readonly SeparatorTrie s_weakSeparators1 = new([
-            ": ", ":", // note: \n \t make no difference with this char
-            ", ", ",", // note: \n \t make no difference with this char
+            // 英文
+            ": ", ":",
+            ", ", ",",
+
+            // 中文（新增）
+            "： ", "：",
+            "， ", "，",
         ]);
 
         // Prioritized list of characters to split inside a sentence when other splits are not found.
