@@ -92,6 +92,13 @@ namespace AI.KnowledgeBase.Services
                 StorageType = FileSystemTypes.Disk,
             };
 
+            // 配置文本数据库
+            var textDbConfig = new SimpleTextDbConfig
+            {
+                Directory = _storageFolder,
+                StorageType = FileSystemTypes.Disk,
+            };
+
             // 配置向量数据库
             var vectorDbConfig = new SimpleVectorDbConfig
             {
@@ -109,7 +116,8 @@ namespace AI.KnowledgeBase.Services
             var builder = new KernelMemoryBuilder()
                 .WithCustomTextPartitioningOptions(textPartitioningOptions)
                 .WithSimpleFileStorage(storageConfig)
-                .WithSimpleVectorDb(vectorDbConfig)
+                .WithSimpleTextDb(textDbConfig)
+                //.WithSimpleVectorDb(vectorDbConfig)
                 .WithSearchClientConfig(searchClientConfig)
                 .WithoutTextGenerator();
 
