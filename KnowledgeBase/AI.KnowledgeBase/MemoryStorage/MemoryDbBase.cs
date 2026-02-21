@@ -173,6 +173,7 @@ public abstract class MemoryDbBase : IMemoryDb
         {
             EnhancedFileSystemTypes.Disk => new DiskFileSystem(config.Directory, null, loggerFactory),
             EnhancedFileSystemTypes.Volatile => VolatileFileSystem.GetInstance(config.Directory, null, loggerFactory),
+            EnhancedFileSystemTypes.Hybrid => new HybridFileSystem(config.Directory, null, loggerFactory),
             _ => throw new ArgumentException($"Unknown storage type {config.StorageType}")
         };
     }
