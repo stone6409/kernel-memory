@@ -29,6 +29,21 @@ public abstract class SimpleMemoryDbBase : IMemoryDb
     /// <summary>
     /// Create new instance
     /// </summary>
+    /// <param name="config">Simple memory db configuration</param>
+    /// <param name="logger">Application logger</param>
+    protected SimpleMemoryDbBase(
+        SimpleMemoryDbConfig config,
+        ILogger logger)
+    {
+        if (config == null) throw new ArgumentNullException(nameof(config));
+        
+        this._fileSystem = CreateFileSystem(config, null);
+        this._log = logger ?? throw new ArgumentNullException(nameof(logger));
+    }
+
+    /// <summary>
+    /// Create new instance
+    /// </summary>
     /// <param name="fileSystem">File system implementation</param>
     /// <param name="logger">Application logger</param>
     protected SimpleMemoryDbBase(
@@ -145,6 +160,21 @@ public abstract class SimpleMemoryDbBase : IMemoryDb
 
         this._log.LogDebug("{RecordCount} records loaded", records.Count);
         return records;
+    }
+
+    /// <summary>
+    /// Create file system based on configuration
+    /// </summary>
+    protected static IFileSystem CreateFileSystem(SimpleMemoryDbConfig config, ILoggerFactory? loggerFactory = null)
+    {
+        if (config == null) throw new ArgumentNullException(nameof(config));
+
+        return config.StorageType switch
+        {
+            FileSystemTypes.Disk => new DiskFileSystem(config.Directory, null, loggerFactory),
+            FileSystemTypes.Volatile => VolatileFileSystem.GetInstance(config.Directory, null, loggerFactory),
+            _ => throw new ArgumentException($"Unknown storage type {config.StorageType}")
+        };
     }
 
     #endregion

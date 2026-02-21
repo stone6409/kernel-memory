@@ -48,8 +48,7 @@ public class SimpleBM25Db : SimpleMemoryDbBase
         SimpleBM25DbConfig config,
         BM25Parameters parameters,
         ILoggerFactory? loggerFactory = null)
-        : base(CreateFileSystem(config, loggerFactory), 
-              (loggerFactory ?? DefaultLogger.Factory).CreateLogger<SimpleBM25Db>())
+        : base(config, (loggerFactory ?? DefaultLogger.Factory).CreateLogger<SimpleBM25Db>())
     {
         this._bm25Algorithm = new BM25Algorithm(parameters);
     }
@@ -135,18 +134,4 @@ public class SimpleBM25Db : SimpleMemoryDbBase
     /// Get the BM25 algorithm instance for advanced usage
     /// </summary>
     public BM25Algorithm GetBM25Algorithm() => _bm25Algorithm;
-
-    #region Private Helper Methods
-
-    private static IFileSystem CreateFileSystem(SimpleBM25DbConfig config, ILoggerFactory? loggerFactory)
-    {
-        return config.StorageType switch
-        {
-            FileSystemTypes.Disk => new DiskFileSystem(config.Directory, null, loggerFactory),
-            FileSystemTypes.Volatile => VolatileFileSystem.GetInstance(config.Directory, null, loggerFactory),
-            _ => throw new ArgumentException($"Unknown storage type {config.StorageType}")
-        };
-    }
-
-    #endregion
 }
