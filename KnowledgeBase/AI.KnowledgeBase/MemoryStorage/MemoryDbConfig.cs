@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Microsoft. All rights reserved.
 
+using AI.KnowledgeBase.FileSystem;
 using Microsoft.KernelMemory.FileSystem.DevTools;
 
 namespace AI.KnowledgeBase.MemoryStorage;
@@ -12,7 +13,7 @@ public abstract class MemoryDbConfig
     /// <summary>
     /// The type of storage to use. Defaults to volatile (in RAM).
     /// </summary>
-    public FileSystemTypes StorageType { get; set; } = FileSystemTypes.Volatile;
+    public EnhancedFileSystemTypes StorageType { get; set; } = EnhancedFileSystemTypes.Volatile;
 
     /// <summary>
     /// Directory of the storage.
@@ -24,7 +25,7 @@ public abstract class MemoryDbConfig
     /// </summary>
     public static T Volatile<T>() where T : MemoryDbConfig, new()
     {
-        return new T { StorageType = FileSystemTypes.Volatile };
+        return new T { StorageType = EnhancedFileSystemTypes.Volatile };
     }
 
     /// <summary>
@@ -32,6 +33,6 @@ public abstract class MemoryDbConfig
     /// </summary>
     public static T Persistent<T>() where T : MemoryDbConfig, new()
     {
-        return new T { StorageType = FileSystemTypes.Disk };
+        return new T { StorageType = EnhancedFileSystemTypes.Disk };
     }
 }

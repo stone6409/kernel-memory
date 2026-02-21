@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Microsoft. All rights reserved.
 
+using AI.KnowledgeBase.FileSystem;
 using Microsoft.KernelMemory.FileSystem.DevTools;
 
 namespace AI.KnowledgeBase.MemoryStorage.Hybrid;
@@ -12,12 +13,12 @@ public class HybridMemoryDbConfig : MemoryDbConfig
     /// <summary>
     /// Gets a volatile storage configuration for HybridMemoryDb
     /// </summary>
-    public new static HybridMemoryDbConfig Volatile { get => new() { StorageType = FileSystemTypes.Volatile, Directory = "tmp-memory-hybrid" }; }
+    public new static HybridMemoryDbConfig Volatile { get => new() { StorageType = EnhancedFileSystemTypes.Volatile, Directory = "tmp-memory-hybrid" }; }
 
     /// <summary>
     /// Gets a persistent storage configuration for HybridMemoryDb
     /// </summary>
-    public new static HybridMemoryDbConfig Persistent { get => new() { StorageType = FileSystemTypes.Disk, Directory = "tmp-memory-hybrid" }; }
+    public new static HybridMemoryDbConfig Persistent { get => new() { StorageType = EnhancedFileSystemTypes.Disk, Directory = "tmp-memory-hybrid" }; }
 
     /// <summary>
     /// Default constructor

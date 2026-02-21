@@ -1,4 +1,5 @@
-﻿using AI.KnowledgeBase.MemoryStorage;
+﻿using AI.KnowledgeBase.FileSystem;
+using AI.KnowledgeBase.MemoryStorage;
 using AI.KnowledgeBase.MemoryStorage.Hybrid;
 using AI.KnowledgeBase.MemoryStorage.Keyword;
 using AI.KnowledgeBase.MemoryStorage.Semantic;
@@ -114,21 +115,21 @@ namespace AI.KnowledgeBase.Services
             var keywordMemoryDbConfig = new KeywordMemoryDbConfig
             {
                 Directory = _storageFolder,
-                StorageType = FileSystemTypes.Disk,
+                StorageType = EnhancedFileSystemTypes.Disk,
             };
 
             // 配置语义数据库
             var semanticMemoryDbConfig = new SemanticMemoryDbConfig
             {
                 Directory = _storageFolder,
-                StorageType = FileSystemTypes.Disk,
+                StorageType = EnhancedFileSystemTypes.Disk,
             };
 
             // 配置混合数据库
             var hybridMemoryDbConfig = new HybridMemoryDbConfig
             {
                 Directory = _storageFolder,
-                StorageType = FileSystemTypes.Disk,
+                StorageType = EnhancedFileSystemTypes.Disk,
             };
 
             // 配置搜索客户端

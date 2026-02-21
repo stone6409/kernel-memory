@@ -171,8 +171,8 @@ public abstract class MemoryDbBase : IMemoryDb
 
         return config.StorageType switch
         {
-            FileSystemTypes.Disk => new DiskFileSystem(config.Directory, null, loggerFactory),
-            FileSystemTypes.Volatile => VolatileFileSystem.GetInstance(config.Directory, null, loggerFactory),
+            EnhancedFileSystemTypes.Disk => new DiskFileSystem(config.Directory, null, loggerFactory),
+            EnhancedFileSystemTypes.Volatile => VolatileFileSystem.GetInstance(config.Directory, null, loggerFactory),
             _ => throw new ArgumentException($"Unknown storage type {config.StorageType}")
         };
     }

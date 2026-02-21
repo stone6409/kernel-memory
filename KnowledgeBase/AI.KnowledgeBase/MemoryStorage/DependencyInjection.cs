@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Microsoft. All rights reserved.
 
+using AI.KnowledgeBase.FileSystem;
 using AI.KnowledgeBase.MemoryStorage.Hybrid;
 using AI.KnowledgeBase.MemoryStorage.Keyword;
 using AI.KnowledgeBase.MemoryStorage.Semantic;
@@ -68,7 +69,7 @@ public static partial class DependencyInjection
 
     public static IServiceCollection AddKeywordMemoryDbAsMemoryDb(this IServiceCollection services, string directory)
     {
-        var config = new KeywordMemoryDbConfig { StorageType = FileSystemTypes.Disk, Directory = directory };
+        var config = new KeywordMemoryDbConfig { StorageType = EnhancedFileSystemTypes.Disk, Directory = directory };
         return services.AddKeywordMemoryDbAsMemoryDb(config);
     }
 
@@ -81,7 +82,7 @@ public static partial class DependencyInjection
 
     public static IServiceCollection AddSemanticMemoryDbAsMemoryDb(this IServiceCollection services, string directory)
     {
-        var config = new SemanticMemoryDbConfig { StorageType = FileSystemTypes.Disk, Directory = directory };
+        var config = new SemanticMemoryDbConfig { StorageType = EnhancedFileSystemTypes.Disk, Directory = directory };
         return services.AddSemanticMemoryDbAsMemoryDb(config);
     }
 
@@ -94,7 +95,7 @@ public static partial class DependencyInjection
 
     public static IServiceCollection AddHybridMemoryDbAsMemoryDb(this IServiceCollection services, string directory)
     {
-        var config = new HybridMemoryDbConfig { StorageType = FileSystemTypes.Disk, Directory = directory };
+        var config = new HybridMemoryDbConfig { StorageType = EnhancedFileSystemTypes.Disk, Directory = directory };
         return services.AddHybridMemoryDbAsMemoryDb(config);
     }
 
