@@ -22,7 +22,7 @@ namespace AI.KnowledgeBase.MemoryStorage.BM25;
 /// Uses BM25 algorithm for text similarity search without requiring embedding generators.
 /// </summary>
 [Experimental("KMEXP03")]
-public class SimpleBM25Db : SimpleMemoryDbBase
+public class BM25MemoryDb : MemoryDbBase
 {
     private readonly BM25Algorithm _bm25Algorithm;
 
@@ -31,8 +31,8 @@ public class SimpleBM25Db : SimpleMemoryDbBase
     /// </summary>
     /// <param name="config">Simple BM25 db settings</param>
     /// <param name="loggerFactory">Application logger factory</param>
-    public SimpleBM25Db(
-        SimpleBM25DbConfig config,
+    public BM25MemoryDb(
+        BM25MemoryDbConfig config,
         ILoggerFactory? loggerFactory = null)
         : this(config, new BM25Parameters(), loggerFactory)
     {
@@ -44,11 +44,11 @@ public class SimpleBM25Db : SimpleMemoryDbBase
     /// <param name="config">Simple BM25 db settings</param>
     /// <param name="parameters">BM25 algorithm parameters</param>
     /// <param name="loggerFactory">Application logger factory</param>
-    public SimpleBM25Db(
-        SimpleBM25DbConfig config,
+    public BM25MemoryDb(
+        BM25MemoryDbConfig config,
         BM25Parameters parameters,
         ILoggerFactory? loggerFactory = null)
-        : base(config, (loggerFactory ?? DefaultLogger.Factory).CreateLogger<SimpleBM25Db>())
+        : base(config, (loggerFactory ?? DefaultLogger.Factory).CreateLogger<BM25MemoryDb>())
     {
         this._bm25Algorithm = new BM25Algorithm(parameters);
     }

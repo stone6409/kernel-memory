@@ -7,22 +7,22 @@ namespace AI.KnowledgeBase.MemoryStorage.BM25;
 /// <summary>
 /// Configuration for SimpleBM25Db
 /// </summary>
-public class SimpleBM25DbConfig : SimpleMemoryDbConfig
+public class BM25MemoryDbConfig : MemoryDbConfig
 {
     /// <summary>
     /// Gets a volatile storage configuration for SimpleBM25Db
     /// </summary>
-    public new static SimpleBM25DbConfig Volatile { get => new() { StorageType = FileSystemTypes.Volatile, Directory = "tmp-memory-text" }; }
+    public new static BM25MemoryDbConfig Volatile { get => new() { StorageType = FileSystemTypes.Volatile, Directory = "tmp-memory-text" }; }
 
     /// <summary>
     /// Gets a persistent storage configuration for SimpleBM25Db
     /// </summary>
-    public new static SimpleBM25DbConfig Persistent { get => new() { StorageType = FileSystemTypes.Disk, Directory = "tmp-memory-text" }; }
+    public new static BM25MemoryDbConfig Persistent { get => new() { StorageType = FileSystemTypes.Disk, Directory = "tmp-memory-text" }; }
 
     /// <summary>
     /// Default constructor
     /// </summary>
-    public SimpleBM25DbConfig()
+    public BM25MemoryDbConfig()
     {
         Directory = "tmp-memory-text";
     }

@@ -7,7 +7,7 @@ namespace AI.KnowledgeBase.MemoryStorage;
 /// <summary>
 /// Base configuration for simple memory databases
 /// </summary>
-public abstract class SimpleMemoryDbConfig
+public abstract class MemoryDbConfig
 {
     /// <summary>
     /// The type of storage to use. Defaults to volatile (in RAM).
@@ -22,7 +22,7 @@ public abstract class SimpleMemoryDbConfig
     /// <summary>
     /// Gets a volatile storage configuration
     /// </summary>
-    public static T Volatile<T>() where T : SimpleMemoryDbConfig, new()
+    public static T Volatile<T>() where T : MemoryDbConfig, new()
     {
         return new T { StorageType = FileSystemTypes.Volatile };
     }
@@ -30,7 +30,7 @@ public abstract class SimpleMemoryDbConfig
     /// <summary>
     /// Gets a persistent storage configuration
     /// </summary>
-    public static T Persistent<T>() where T : SimpleMemoryDbConfig, new()
+    public static T Persistent<T>() where T : MemoryDbConfig, new()
     {
         return new T { StorageType = FileSystemTypes.Disk };
     }

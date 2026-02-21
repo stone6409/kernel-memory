@@ -109,7 +109,7 @@ namespace AI.KnowledgeBase.Services
             };
 
             // 配置文本数据库
-            var bm25DbConfig = new SimpleBM25DbConfig
+            var bm25DbConfig = new BM25MemoryDbConfig
             {
                 Directory = _storageFolder,
                 StorageType = FileSystemTypes.Disk,

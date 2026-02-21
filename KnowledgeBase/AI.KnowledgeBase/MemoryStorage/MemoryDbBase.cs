@@ -21,7 +21,7 @@ namespace AI.KnowledgeBase.MemoryStorage;
 /// <summary>
 /// Abstract base class for simple memory databases with common functionality
 /// </summary>
-public abstract class SimpleMemoryDbBase : IMemoryDb
+public abstract class MemoryDbBase : IMemoryDb
 {
     protected readonly IFileSystem _fileSystem;
     protected readonly ILogger _log;
@@ -31,8 +31,8 @@ public abstract class SimpleMemoryDbBase : IMemoryDb
     /// </summary>
     /// <param name="config">Simple memory db configuration</param>
     /// <param name="logger">Application logger</param>
-    protected SimpleMemoryDbBase(
-        SimpleMemoryDbConfig config,
+    protected MemoryDbBase(
+        MemoryDbConfig config,
         ILogger logger)
     {
         if (config == null) throw new ArgumentNullException(nameof(config));
@@ -46,7 +46,7 @@ public abstract class SimpleMemoryDbBase : IMemoryDb
     /// </summary>
     /// <param name="fileSystem">File system implementation</param>
     /// <param name="logger">Application logger</param>
-    protected SimpleMemoryDbBase(
+    protected MemoryDbBase(
         IFileSystem fileSystem,
         ILogger logger)
     {
@@ -165,7 +165,7 @@ public abstract class SimpleMemoryDbBase : IMemoryDb
     /// <summary>
     /// Create file system based on configuration
     /// </summary>
-    protected static IFileSystem CreateFileSystem(SimpleMemoryDbConfig config, ILoggerFactory? loggerFactory = null)
+    protected static IFileSystem CreateFileSystem(MemoryDbConfig config, ILoggerFactory? loggerFactory = null)
     {
         if (config == null) throw new ArgumentNullException(nameof(config));
 
