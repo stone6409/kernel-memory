@@ -28,7 +28,7 @@ public class SimpleBM25Db : IMemoryDb
 {
     private readonly IFileSystem _fileSystem;
     private readonly ILogger<SimpleBM25Db> _log;
-    private readonly BM25Parameters _parameters;
+    private readonly BM25Algorithm _bm25Algorithm;
 
     /// <summary>
     /// Create new instance
@@ -54,7 +54,7 @@ public class SimpleBM25Db : IMemoryDb
         ILoggerFactory? loggerFactory = null)
     {
         this._log = (loggerFactory ?? DefaultLogger.Factory).CreateLogger<SimpleBM25Db>();
-        this._parameters = parameters ?? new BM25Parameters();
+        this._bm25Algorithm = new BM25Algorithm(parameters);
 
         switch (config.StorageType)
         {
@@ -128,45 +128,15 @@ public class SimpleBM25Db : IMemoryDb
             yield break;
         }
 
-        // Tokenize query text
-        var queryTokens = TokenizeText(text);
-        if (queryTokens.Count == 0)
-        {
-            yield break;
-        }
-
-        // Prepare document collection for BM25 calculation
-        var documents = new List<BM25Document>();
-        foreach (var record in records)
-        {
-            var storedText = record.Value.Payload[Constants.ReservedPayloadTextField]?.ToString();
-            if (string.IsNullOrEmpty(storedText))
-            {
-                continue;
-            }
-
-            var docTokens = TokenizeText(storedText);
-            if (docTokens.Count == 0)
-            {
-                continue;
-            }
-
-            documents.Add(new BM25Document
-            {
-                Id = record.Key,
-                Text = storedText,
-                Tokens = docTokens,
-                Record = record.Value
-            });
-        }
-
+        // Prepare documents for BM25 calculation
+        var documents = PrepareDocuments(records);
         if (documents.Count == 0)
         {
             yield break;
         }
 
         // Calculate BM25 scores
-        var scores = CalculateBM25Scores(documents, queryTokens);
+        var scores = _bm25Algorithm.CalculateScores(documents, text);
 
         // Sort by score descending and filter by minRelevance
         var sortedResults = scores
@@ -229,115 +199,40 @@ public class SimpleBM25Db : IMemoryDb
         return this._fileSystem.DeleteFileAsync(index, "", EncodeId(record.Id), cancellationToken);
     }
 
-    #region BM25 Implementation
-
-    private class BM25Document
-    {
-        public string Id { get; set; } = string.Empty;
-        public string Text { get; set; } = string.Empty;
-        public List<string> Tokens { get; set; } = new List<string>();
-        public MemoryRecord Record { get; set; } = null!;
-    }
+    #region Helper Methods
 
     /// <summary>
-    /// Tokenize text into terms
+    /// Prepare documents from memory records for BM25 calculation
     /// </summary>
-    private List<string> TokenizeText(string text)
+    private List<BM25Document> PrepareDocuments(Dictionary<string, MemoryRecord> records)
     {
-        // Use Unicode-aware tokenization to support multiple languages
-        var tokens = Regex.Replace(text, @"[^\p{L}0-9_]+", " ")
-            .Split(' ')
-            .Select(x => x.Trim().ToLowerInvariant())
-            .Where(x => !string.IsNullOrEmpty(x) && x.Length > 1) // Filter out single characters
-            .ToList();
+        var documents = new List<BM25Document>();
 
-        return tokens;
-    }
-
-    /// <summary>
-    /// Calculate BM25 scores for documents against query
-    /// </summary>
-    private Dictionary<string, double> CalculateBM25Scores(List<BM25Document> documents, List<string> queryTokens)
-    {
-        var scores = new Dictionary<string, double>();
-        var N = documents.Count; // Total number of documents
-        var avgDocLength = documents.Average(d => d.Tokens.Count);
-
-        // Calculate document frequency for each query term
-        var docFrequencies = new Dictionary<string, int>();
-        foreach (var term in queryTokens.Distinct())
+        foreach (var record in records)
         {
-            docFrequencies[term] = documents.Count(d => d.Tokens.Contains(term));
-        }
-
-        // Calculate BM25 score for each document
-        foreach (var doc in documents)
-        {
-            var docLength = doc.Tokens.Count;
-            var score = 0.0;
-
-            foreach (var term in queryTokens.Distinct())
+            var storedText = record.Value.Payload[Constants.ReservedPayloadTextField]?.ToString();
+            if (string.IsNullOrEmpty(storedText))
             {
-                var termFrequency = doc.Tokens.Count(t => t == term);
-                if (termFrequency < _parameters.MinTermFrequency)
-                {
-                    continue;
-                }
-
-                var df = docFrequencies[term];
-                if (df == 0)
-                {
-                    continue;
-                }
-
-                // Calculate IDF (Inverse Document Frequency)
-                var idf = CalculateIDF(N, df);
-
-                // Calculate TF (Term Frequency) component
-                var tf = CalculateTF(termFrequency, docLength, avgDocLength);
-
-                // Add to score
-                score += idf * tf;
+                continue;
             }
 
-            scores[doc.Id] = score;
+            // Use BM25Algorithm to create document with tokenized text
+            var document = _bm25Algorithm.CreateDocument(record.Key, storedText, record.Value);
+            if (document.Tokens.Count == 0)
+            {
+                continue;
+            }
+
+            documents.Add(document);
         }
 
-        return scores;
+        return documents;
     }
 
     /// <summary>
-    /// Calculate Inverse Document Frequency
+    /// Get the BM25 algorithm instance for advanced usage
     /// </summary>
-    private double CalculateIDF(int totalDocs, int docFrequency)
-    {
-        if (_parameters.UseBM25Plus)
-        {
-            // BM25+ variant: adds delta to prevent negative IDF
-            return Math.Log((totalDocs - docFrequency + 0.5) / (docFrequency + 0.5)) + _parameters.Delta;
-        }
-        else
-        {
-            // Standard BM25 IDF
-            return Math.Log((totalDocs - docFrequency + 0.5) / (docFrequency + 0.5));
-        }
-    }
-
-    /// <summary>
-    /// Calculate Term Frequency component
-    /// </summary>
-    private double CalculateTF(int termFrequency, int docLength, double avgDocLength)
-    {
-        if (!_parameters.UseLengthNormalization)
-        {
-            // Without length normalization
-            return (termFrequency * (_parameters.K1 + 1)) / (termFrequency + _parameters.K1);
-        }
-
-        // With length normalization
-        var lengthNormalization = 1 - _parameters.B + _parameters.B * (docLength / avgDocLength);
-        return (termFrequency * (_parameters.K1 + 1)) / (termFrequency + _parameters.K1 * lengthNormalization);
-    }
+    public BM25Algorithm GetBM25Algorithm() => _bm25Algorithm;
 
     #endregion
 
