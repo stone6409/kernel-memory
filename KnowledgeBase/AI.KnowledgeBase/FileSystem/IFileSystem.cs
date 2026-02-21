@@ -9,7 +9,7 @@ using Microsoft.KernelMemory;
 
 namespace AI.KnowledgeBase.FileSystem;
 
-internal interface IFileSystem
+public interface IFileSystem
 {
     #region Volume API
 
