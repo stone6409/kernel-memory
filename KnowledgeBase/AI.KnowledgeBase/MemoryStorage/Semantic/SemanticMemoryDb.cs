@@ -21,7 +21,7 @@ namespace AI.KnowledgeBase.MemoryStorage.Vector;
 /// Basic vector db implementation, designed for tests and demos only.
 /// When searching, uses brute force comparing against all stored records.
 /// </summary>
-public class VectorMemoryDb : MemoryDbBase
+public class SemanticMemoryDb : MemoryDbBase
 {
     private readonly ITextEmbeddingGenerator _embeddingGenerator;
 
@@ -31,11 +31,11 @@ public class VectorMemoryDb : MemoryDbBase
     /// <param name="config">Simple vector db settings</param>
     /// <param name="embeddingGenerator">Text embedding generator</param>
     /// <param name="loggerFactory">Application logger factory</param>
-    public VectorMemoryDb(
-        VectorMemoryDbConfig config,
+    public SemanticMemoryDb(
+        SemanticMemoryDbConfig config,
         ITextEmbeddingGenerator embeddingGenerator,
         ILoggerFactory? loggerFactory = null)
-        : base(config, (loggerFactory ?? DefaultLogger.Factory).CreateLogger<VectorMemoryDb>())
+        : base(config, (loggerFactory ?? DefaultLogger.Factory).CreateLogger<SemanticMemoryDb>())
     {
         this._embeddingGenerator = embeddingGenerator ?? throw new ArgumentNullException(nameof(embeddingGenerator));
     }

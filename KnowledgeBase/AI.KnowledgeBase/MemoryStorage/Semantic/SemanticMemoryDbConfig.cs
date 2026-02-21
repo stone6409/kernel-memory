@@ -7,22 +7,22 @@ namespace AI.KnowledgeBase.MemoryStorage.Vector;
 /// <summary>
 /// Configuration for SimpleVectorDb
 /// </summary>
-public class VectorMemoryDbConfig : MemoryDbConfig
+public class SemanticMemoryDbConfig : MemoryDbConfig
 {
     /// <summary>
     /// Gets a volatile storage configuration for SimpleVectorDb
     /// </summary>
-    public new static VectorMemoryDbConfig Volatile { get => new() { StorageType = FileSystemTypes.Volatile, Directory = "tmp-memory-vectors" }; }
+    public new static SemanticMemoryDbConfig Volatile { get => new() { StorageType = FileSystemTypes.Volatile, Directory = "tmp-memory-vectors" }; }
 
     /// <summary>
     /// Gets a persistent storage configuration for SimpleVectorDb
     /// </summary>
-    public new static VectorMemoryDbConfig Persistent { get => new() { StorageType = FileSystemTypes.Disk, Directory = "tmp-memory-vectors" }; }
+    public new static SemanticMemoryDbConfig Persistent { get => new() { StorageType = FileSystemTypes.Disk, Directory = "tmp-memory-vectors" }; }
 
     /// <summary>
     /// Default constructor
     /// </summary>
-    public VectorMemoryDbConfig()
+    public SemanticMemoryDbConfig()
     {
         Directory = "tmp-memory-vectors";
     }

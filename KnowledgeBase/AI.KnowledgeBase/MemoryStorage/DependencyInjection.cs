@@ -14,15 +14,15 @@ namespace AI.KnowledgeBase.MemoryStorage;
 /// </summary>
 public static partial class KernelMemoryBuilderExtensions
 {
-    public static IKernelMemoryBuilder WithSimpleBM25DbDb(this IKernelMemoryBuilder builder, BM25MemoryDbConfig? config = null)
+    public static IKernelMemoryBuilder WithKeywordMemoryDb(this IKernelMemoryBuilder builder, KeywordMemoryDbConfig? config = null)
     {
-        builder.Services.AddSimpleBM25DbDbAsMemoryDb(config ?? new BM25MemoryDbConfig());
+        builder.Services.AddKeywordMemoryDbAsMemoryDb(config ?? new KeywordMemoryDbConfig());
         return builder;
     }
 
-    public static IKernelMemoryBuilder WithSimpleBM25DbDb(this IKernelMemoryBuilder builder, string directory)
+    public static IKernelMemoryBuilder WithKeywordMemoryDb(this IKernelMemoryBuilder builder, string directory)
     {
-        builder.Services.AddSimpleBM25DbDbAsMemoryDb(directory);
+        builder.Services.AddKeywordMemoryDbAsMemoryDb(directory);
         return builder;
     }
 }
@@ -32,16 +32,16 @@ public static partial class KernelMemoryBuilderExtensions
 /// </summary>
 public static partial class DependencyInjection
 {
-    public static IServiceCollection AddSimpleBM25DbDbAsMemoryDb(this IServiceCollection services, BM25MemoryDbConfig? config = null)
+    public static IServiceCollection AddKeywordMemoryDbAsMemoryDb(this IServiceCollection services, KeywordMemoryDbConfig? config = null)
     {
         return services
-            .AddSingleton<BM25MemoryDbConfig>(config ?? new BM25MemoryDbConfig())
-            .AddSingleton<IMemoryDb, BM25MemoryDb>();
+            .AddSingleton<KeywordMemoryDbConfig>(config ?? new KeywordMemoryDbConfig())
+            .AddSingleton<IMemoryDb, KeywordMemoryDb>();
     }
 
-    public static IServiceCollection AddSimpleBM25DbDbAsMemoryDb(this IServiceCollection services, string directory)
+    public static IServiceCollection AddKeywordMemoryDbAsMemoryDb(this IServiceCollection services, string directory)
     {
-        var config = new BM25MemoryDbConfig { StorageType = FileSystemTypes.Disk, Directory = directory };
-        return services.AddSimpleBM25DbDbAsMemoryDb(config);
+        var config = new KeywordMemoryDbConfig { StorageType = FileSystemTypes.Disk, Directory = directory };
+        return services.AddKeywordMemoryDbAsMemoryDb(config);
     }
 }

@@ -109,7 +109,7 @@ namespace AI.KnowledgeBase.Services
             };
 
             // 配置文本数据库
-            var bm25DbConfig = new BM25MemoryDbConfig
+            var bm25DbConfig = new KeywordMemoryDbConfig
             {
                 Directory = _storageFolder,
                 StorageType = FileSystemTypes.Disk,
@@ -127,7 +127,7 @@ namespace AI.KnowledgeBase.Services
                 .WithSimpleFileStorage(storageConfig)
                 //.WithSimpleTextDb(textDbConfig)
                 //.WithSimpleVectorDb(vectorDbConfig)
-                .WithSimpleBM25DbDb(bm25DbConfig)
+                .WithKeywordMemoryDb(bm25DbConfig)
                 .WithSearchClientConfig(searchClientConfig)
                 .WithoutTextGenerator();
 
