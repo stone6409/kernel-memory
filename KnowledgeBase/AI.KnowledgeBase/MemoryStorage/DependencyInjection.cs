@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Microsoft. All rights reserved.
 
+using AI.KnowledgeBase.MemoryStorage.Hybrid;
 using AI.KnowledgeBase.MemoryStorage.Keyword;
 using AI.KnowledgeBase.MemoryStorage.Semantic;
 using Microsoft.Extensions.DependencyInjection;
@@ -39,6 +40,18 @@ public static partial class KernelMemoryBuilderExtensions
         return builder;
     }
 
+    public static IKernelMemoryBuilder WithHybridMemoryDb(this IKernelMemoryBuilder builder, HybridMemoryDbConfig? config = null)
+    {
+        builder.Services.AddHybridMemoryDbAsMemoryDb(config ?? new HybridMemoryDbConfig());
+        return builder;
+    }
+
+    public static IKernelMemoryBuilder WithHybridMemoryDb(this IKernelMemoryBuilder builder, string directory)
+    {
+        builder.Services.AddHybridMemoryDbAsMemoryDb(directory);
+        return builder;
+    }
+
 }
 
 /// <summary>
@@ -70,6 +83,19 @@ public static partial class DependencyInjection
     {
         var config = new SemanticMemoryDbConfig { StorageType = FileSystemTypes.Disk, Directory = directory };
         return services.AddSemanticMemoryDbAsMemoryDb(config);
+    }
+
+    public static IServiceCollection AddHybridMemoryDbAsMemoryDb(this IServiceCollection services, HybridMemoryDbConfig? config = null)
+    {
+        return services
+            .AddSingleton<HybridMemoryDbConfig>(config ?? new HybridMemoryDbConfig())
+            .AddSingleton<IMemoryDb, HybridMemoryDb>();
+    }
+
+    public static IServiceCollection AddHybridMemoryDbAsMemoryDb(this IServiceCollection services, string directory)
+    {
+        var config = new HybridMemoryDbConfig { StorageType = FileSystemTypes.Disk, Directory = directory };
+        return services.AddHybridMemoryDbAsMemoryDb(config);
     }
 
 }

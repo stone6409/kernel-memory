@@ -1,4 +1,5 @@
 ﻿using AI.KnowledgeBase.MemoryStorage;
+using AI.KnowledgeBase.MemoryStorage.Hybrid;
 using AI.KnowledgeBase.MemoryStorage.Keyword;
 using AI.KnowledgeBase.MemoryStorage.Semantic;
 using Microsoft.Extensions.Configuration;
@@ -109,15 +110,22 @@ namespace AI.KnowledgeBase.Services
                 StorageType = FileSystemTypes.Disk,
             };
 
-            // 配置文本数据库
+            // 配置关键词数据库
             var keywordMemoryDbConfig = new KeywordMemoryDbConfig
             {
                 Directory = _storageFolder,
                 StorageType = FileSystemTypes.Disk,
             };
 
-            // 配置文本数据库
+            // 配置语义数据库
             var semanticMemoryDbConfig = new SemanticMemoryDbConfig
+            {
+                Directory = _storageFolder,
+                StorageType = FileSystemTypes.Disk,
+            };
+
+            // 配置混合数据库
+            var hybridMemoryDbConfig = new HybridMemoryDbConfig
             {
                 Directory = _storageFolder,
                 StorageType = FileSystemTypes.Disk,
@@ -136,7 +144,8 @@ namespace AI.KnowledgeBase.Services
                 //.WithSimpleTextDb(textDbConfig)
                 //.WithSimpleVectorDb(vectorDbConfig)
                 //.WithKeywordMemoryDb(keywordMemoryDbConfig)
-                .WithSemanticMemoryDb(semanticMemoryDbConfig)
+                //.WithSemanticMemoryDb(semanticMemoryDbConfig)
+                .WithHybridMemoryDb(hybridMemoryDbConfig)
                 .WithSearchClientConfig(searchClientConfig)
                 .WithoutTextGenerator();
 
