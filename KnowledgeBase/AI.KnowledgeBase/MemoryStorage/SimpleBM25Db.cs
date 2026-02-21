@@ -137,6 +137,7 @@ public class SimpleBM25Db : IMemoryDb
 
         // Calculate BM25 scores
         var scores = _bm25Algorithm.CalculateScores(documents, text);
+        scores = BM25Normalizer.NormalizeScores(scores);
 
         // Sort by score descending and filter by minRelevance
         var sortedResults = scores

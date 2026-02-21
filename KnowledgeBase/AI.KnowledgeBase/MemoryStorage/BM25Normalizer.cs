@@ -1,12 +1,12 @@
 ﻿
 namespace AI.KnowledgeBase.MemoryStorage
 {
-    public class BM25Normalizer
+    public static class BM25Normalizer
     {
         /// <summary>
         /// 将 BM25 分数归一化到 [0, 1] 范围
         /// </summary>
-        public Dictionary<string, double> NormalizeScores(Dictionary<string, double> scores)
+        public static Dictionary<string, double> NormalizeScores(Dictionary<string, double> scores)
         {
             if (scores.Count == 0)
                 return new Dictionary<string, double>();
@@ -24,7 +24,7 @@ namespace AI.KnowledgeBase.MemoryStorage
         /// <summary>
         /// 使用 softmax 归一化（概率分布）
         /// </summary>
-        public Dictionary<string, double> SoftmaxNormalize(Dictionary<string, double> scores)
+        public static Dictionary<string, double> SoftmaxNormalize(Dictionary<string, double> scores)
         {
             if (scores.Count == 0)
                 return new Dictionary<string, double>();
@@ -47,7 +47,7 @@ namespace AI.KnowledgeBase.MemoryStorage
         /// <summary>
         /// 使用 min-max 归一化到指定范围
         /// </summary>
-        public Dictionary<string, double> MinMaxNormalize(
+        public static Dictionary<string, double> MinMaxNormalize(
             Dictionary<string, double> scores, 
             double minRange = 0, 
             double maxRange = 1)
