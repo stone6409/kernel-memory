@@ -76,7 +76,7 @@ namespace AI.KnowledgeBase.Chinese
 
         public ChinesePlainTextChunker(ITextTokenizer? tokenizer = null)
         {
-            this._tokenizer = tokenizer ?? new CL100KTokenizer();
+            this._tokenizer = tokenizer ?? new ChineseTokenizer(); // 使用中文分词
         }
 
         /// <summary>
