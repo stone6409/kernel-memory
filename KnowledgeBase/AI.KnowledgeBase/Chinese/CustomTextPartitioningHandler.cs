@@ -17,7 +17,7 @@ namespace AI.KnowledgeBase.Chinese
         private readonly TextPartitioningOptions _options;
         private readonly ILogger<CustomTextPartitioningHandler> _log;
         private readonly int _maxTokensPerPartition = int.MaxValue;
-        private readonly ChineseOptimizedChunker _chineseChunker;
+        private readonly ChinesePlainTextChunker _plainTextChunker;
         private readonly MarkDownChunker _markDownChunker;
 
         /// <inheritdoc />
@@ -33,7 +33,7 @@ namespace AI.KnowledgeBase.Chinese
             this._orchestrator = orchestrator;
 
             // 使用自定义的中文分块器
-            this._chineseChunker = new ChineseOptimizedChunker(new ChineseTokenizer());
+            this._plainTextChunker = new ChinesePlainTextChunker(new ChineseTokenizer());
             this._markDownChunker = new MarkDownChunker(new ChineseTokenizer());
 
             this._options = options ?? new TextPartitioningOptions();
@@ -120,7 +120,7 @@ namespace AI.KnowledgeBase.Chinese
                             string content = fileContent.ToString();
 
                             // 使用自定义的中文分块器
-                            chunks = this._chineseChunker.Split(content, new PlainTextChunkerOptions 
+                            chunks = this._plainTextChunker.Split(content, new PlainTextChunkerOptions 
                             { 
                                 MaxTokensPerChunk = maxTokensPerChunk, 
                                 Overlap = overlappingTokens, 
