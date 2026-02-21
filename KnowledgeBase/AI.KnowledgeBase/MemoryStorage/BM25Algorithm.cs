@@ -75,7 +75,8 @@ public class BM25Algorithm
 
             foreach (var term in queryTokens.Distinct())
             {
-                var termFrequency = doc.Tokens.Count(t => t == term);
+                //var termFrequency = doc.Tokens.Count(t => t == term);
+                var termFrequency = doc.Tokens.Count(t => t.Contains(term));
                 if (termFrequency < _parameters.MinTermFrequency)
                 {
                     continue;
@@ -133,9 +134,10 @@ public class BM25Algorithm
         var docFrequencies = new Dictionary<string, int>();
         var distinctQueryTerms = queryTokens.Distinct();
 
-        foreach (var term in distinctQueryTerms)
+        foreach (string? term in distinctQueryTerms)
         {
-            docFrequencies[term] = documents.Count(d => d.Tokens.Contains(term));
+            //docFrequencies[term] = documents.Count(d => d.Tokens.Contains(term));
+            docFrequencies[term] = documents.Count(d => d.Tokens.Any(t => t.Contains(term)));
         }
 
         return docFrequencies;
